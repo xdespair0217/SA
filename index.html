@@ -19,6 +19,7 @@
         .col-right { flex: 1.2; min-width: 320px; border-top: 4px solid #8b5cf6; }
 
         .col-header { padding: 12px 16px; font-size: 14px; font-weight: bold; color: #1e293b; background-color: #f8fafc; border-bottom: 1px solid #e2e2e2; display: flex; justify-content: space-between; align-items: center; }
+        .col-header { padding: 12px 16px; font-size: 14px; font-weight: bold; color: #1e293b; background-color: #f8fafc; border-bottom: 1px solid #e2e2e2; display: flex; justify-content: space-between; align-items: center; }
         .col-body { padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; }
 
         .section-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }
@@ -30,14 +31,20 @@
         .col-left .check-item.checked { border-color: #cbd5e1; background-color: #f8fafc; }
         .col-left .check-item.checked span { color: #94a3b8; text-decoration: line-through; }
         
-        /* === 僅在指定紅框處新增按鈕按鈕群組 CSS，其餘維持不變 === */
+        /* 僅在指定紅框處新增按鈕按鈕群組 CSS，其餘維持不變 */
         .col-left .section-title-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .doc-btn-group { display: flex; gap: 4px; }
-        .doc-link-btn { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; font-size: 10.5px; font-weight: bold; text-decoration: none; border-radius: 4px; color: white; transition: background-color 0.2s; }
+        .doc-link-btn { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; font-size: 10.5px; font-weight: bold; text-decoration: none; border-radius: 4px; color: white; transition: background-color 0.2s; cursor: pointer; }
         .btn-blue { background-color: #2563eb; }
         .btn-blue:hover { background-color: #1d4ed8; }
         .btn-orange { background-color: #ea580c; }
         .btn-orange:hover { background-color: #c2410c; }
+
+        /* === 燈箱式名片彈窗專屬 CSS（全新加入，不影響原有排版） === */
+        .lightbox-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; }
+        .lightbox-content { relative: true; max-width: 90%; max-height: 85%; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 4px solid #ffffff; background-color: #fff; cursor: pointer; }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #ffffff; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.2s; user-select: none; }
+        .lightbox-close:hover { color: #cbd5e1; }
         /* ==================================================== */
         
         .script-box { background-color: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 8px; border-radius: 4px; font-size: 11px; margin-bottom: 6px; line-height: 1.4; }
@@ -92,7 +99,7 @@
                 <div id="alert-bar-area">
                     <div id="alert-service" class="alert-bar alert-info"><strong>📌 今日廠務通知：</strong>今日油電車留廠保養專用工位已滿，非緊急出保排程請改約明日。</div>
                     <div id="alert-warranty" class="alert-bar alert-danger" style="display:none;"><strong>⚠️ 出保固限制：</strong>請備齊故障碼與照片，規避被打槍之呆帳風險。</div>
-                    <div id="alert-loaner" class="alert-bar alert-warning" style="display:none;"><strong>🚗 代步車規範：</strong>出車前必須落實清潔確認、傷痕核對與保養里程.</div>
+                    <div id="alert-loaner" class="alert-bar alert-warning" style="display:none;"><strong>🚗 代步車規範：</strong>出車前必須落實清潔確認、傷痕核對與保養里程。</div>
                     <div id="alert-major" class="alert-bar alert-danger" style="display:none;"><strong>🚨 道路救援/重大大修：</strong>請嚴格依據下方話術與技術分流派車！</div>
                     <div id="alert-insurance" class="alert-bar alert-warning" style="display:none;"><strong>💼 保險出險案：</strong>理賠開案案號確認，保留受損現場第一時間原始照片。</div>
                     <div id="alert-pdi" class="alert-bar alert-info" style="display:none;"><strong>✨ 新車 PDI 整備：</strong>全車漆面與前擋玻璃外觀點檢，移除運輸安全防護。</div>
@@ -103,7 +110,7 @@
                         <div class="section-title">🗣️ 1. 道路救援梯次防禦引導話術</div>
                         <div class="doc-btn-group">
                             <a href="https://drive.google.com/file/d/1e1cOy6G7Err4aYL9Ci0ahLcDA49jwlGp/view?usp=sharing" target="_blank" class="doc-link-btn btn-blue" title="點開完整道路救援與特殊拖吊標準作業SOP">📄 完整SOP</a>
-                            <a href="https://drive.google.com/file/d/1MelwXyNEW-2bXiqPwsyaXZBohTNFiB03/view?usp=sharing" target="_blank" class="doc-link-btn btn-orange" title="點開楊明得(阿賢)拖吊業者名片圖檔">🎴 阿賢名片</a>
+                            <span onclick="openLightbox()" class="doc-link-btn btn-orange" title="燈箱彈出楊明得拖吊業者名片">🎴 楊明得</span>
                         </div>
                     </div>
                     <div class="script-box">
@@ -283,6 +290,10 @@
 
     </div>
 
+    <div id="lightboxModal" class="lightbox-modal" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img class="lightbox-content" id="lightboxImg" src="https://raw.githubusercontent.com/xdespair0217/SA/main/A01.jpg" alt="楊明得名片" onclick="event.stopPropagation();">
+    </div>
     <script>
         let activeMode = 'service';
         let activeTags = [];
@@ -295,9 +306,17 @@
                     checkLockStatus();
                 });
             });
-            // 技術優化：移除原本開頭自動模擬點擊的故障語法，改採純數據安全初始化
-            renderLine();
+            changeMode('service', document.querySelector('.mode-btn'));
         }
+
+        // === 全新加入：燈箱控制腳本，極度乾淨安全 ===
+        function openLightbox() {
+            document.getElementById('lightboxModal').style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+        // ===========================================
 
         // 六大模式核心切換與「完全隱藏/顯示」控制邏輯
         function changeMode(mode, btn) {

@@ -189,6 +189,7 @@
                     <div id="alert-custom2" class="alert-bar alert-warning" style="display:none;"><strong>🔹 廠外特定整備：</strong>委外加工與配件裝潢進度追蹤卡控。</div>
                 </div>
 
+                <!-- 新車 / 漆面出保固專屬左欄 SOP 技術規範指南面板 -->
                 <div id="warranty-visual-guide-div" style="display:none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
                         <div class="section-title" style="margin-bottom: 0;">📜 新車 / 漆面保固索賠標準作業程序 (SOP)</div>
@@ -276,6 +277,7 @@
                     </div>
                 </div>
 
+                <!-- 新車 PDI 流程圖落地指南區 -->
                 <div id="pdi-visual-guide-div" style="display:none;">
                     <div class="section-title-container" style="margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
                         <div class="section-title" style="margin-bottom: 0;">🗺️ 新車車輛處理流程細則解構</div>
@@ -297,7 +299,7 @@
                         <span class="pdi-card-tag" style="background: #ea580c;">02 / DECISION</span>
                         <strong>第一時間屬性判定 (切勿延誤時效)</strong>
                         <ul>
-                            <li>• ⚠️ <strong>水險車：</strong>施工前置。必須先與 PGU 和 三立托運 溝通確認後方可施工.</li>
+                            <li>• ⚠️ <strong>水險車：</strong>施工前置。必須先與 PGU 和 三立托運 溝通確認後方可施工。</li>
                             <li>• 🔧 <strong>索賠車：</strong>授權前置。依保固作業提供報價單進行事先授權，核准後方可施工。</li>
                             <li style="color:#b91c1c; font-weight:bold; margin-top:2px;">📍 空間盲點：嚴禁未經確認 / 授權即自行施工！</li>
                         </ul>
@@ -416,16 +418,48 @@
                     <div class="section-title" id="dynamic-form-title">📌 定保專案內容</div>
                     
                     <div id="form-group-service">
-                        <div class="form-group">
-                            <label>指定保養套餐</label>
-                            <select class="form-control" id="f-service-pkg" onchange="renderLine()">
-                                <option value="40,000公里定期保養套餐">40,000公里標準定保套餐</option>
-                                <option value="基礎機油更換套餐">基礎機油更換套餐</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>📅 預約進廠時間（對應預覽首行）</label>
+                                <input type="datetime-local" class="form-control" id="f-service-time" onchange="renderLine()">
+                            </div>
+                            <div class="form-group">
+                                <label>行駛里程 (km)</label>
+                                <input type="number" class="form-control" id="u-mileage-srv" value="38500" oninput="renderLine()">
+                            </div>
                         </div>
-                        <div class="form-group"><label>行駛里程 (km)</label><input type="number" class="form-control" id="u-mileage-srv" value="38500" oninput="renderLine()"></div>
+                        
+                        <div class="pdi-items-box" style="border-color: #10b981; background: #f0fdf4; margin-top: 8px; padding: 10px;">
+                            <div style="font-size:11.5px; font-weight:700; color:#047857; margin-bottom:6px;">🛠️ 連動式里程套餐動態選擇器（精簡不臭長，直達20萬）</div>
+                            <div class="form-row" style="align-items: center;">
+                                <div class="form-group" style="flex: 1.6; margin-bottom: 0;">
+                                    <label style="font-size:11px; color:#065f46;">1. 主要保養級距</label>
+                                    <div class="pdi-radio-group" style="margin: 0; padding: 4px; gap: 8px; border-color: #a7f3d0; justify-content: space-between;">
+                                        <label class="pdi-radio-label" style="font-size:11px;"><input type="radio" name="srv-base" value="0" checked onclick="toggleServiceDigitSelector(true)"> 常規萬級(1~9萬)</label>
+                                        <label class="pdi-radio-label" style="font-size:11px;"><input type="radio" name="srv-base" value="10" onclick="toggleServiceDigitSelector(true)"> 十萬級(10~19萬)</label>
+                                        <label class="pdi-radio-label" style="font-size:11px; color: #1d4ed8; font-weight: bold;"><input type="radio" name="srv-base" value="basic" onclick="toggleServiceDigitSelector(false)"> 基礎機油更換套餐</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="flex: 0.8; margin-bottom: 0;" id="srv-digit-select-block">
+                                    <label style="font-size:11px; color:#065f46;">2. 精準萬級里程</label>
+                                    <select class="form-control" id="f-service-pkg-digit" onchange="renderLine()" style="padding: 4px 8px; font-size:12px;">
+                                        <option value="1">1 萬公里</option>
+                                        <option value="2">2 萬公里</option>
+                                        <option value="3">3 萬公里</option>
+                                        <option value="4" selected>4 萬公里</option>
+                                        <option value="5">5 萬公里</option>
+                                        <option value="6">6 萬公里</option>
+                                        <option value="7">7 萬公里</option>
+                                        <option value="8">8 萬公里</option>
+                                        <option value="9">9 萬公里</option>
+                                        <option value="10">10 萬公里</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- 💼 技術出保專屬核心附件與備忘面板 -->
                     <div id="form-group-warranty" style="display:none;">
                         <div class="pdi-items-box" style="border-color: #3b82f6; background: #f8fafc; margin-top: 0;">
                             <div style="font-size:11.5px; font-weight:700; color:#1e3a8a; margin-bottom:8px;">📋 查修核對檢驗資產 (多選)</div>
@@ -447,13 +481,13 @@
                                 <label class="pdi-checkbox-label" style="color: #b45309; font-size:11.5px; font-weight: 600;"><input type="checkbox" id="chk-war-auth" onchange="renderLine()"> ⚠️ 目前進行原廠事先授權，等候通知。</label>
                             </div>
                         </div>
-                        
                         <div class="form-group" style="margin-top: 12px;">
                             <label style="font-weight: 700; color: #1e3a8a;">💬 出保固特殊備註說明</label>
                             <textarea class="form-control" id="u-war-notes" rows="2" style="resize:none;" placeholder="請在此記錄出保特殊狀況主訴或現場交待..." oninput="renderLine()"></textarea>
                         </div>
                     </div>
 
+                    <!-- 💡 代步車核心欄位與履歷看板 -->
                     <div id="form-group-loaner" style="display:none;">
                         <div class="form-row">
                             <div class="form-group">
@@ -480,6 +514,7 @@
                             </div>
                         </div>
 
+                        <!-- 💡 唯讀資產卡 -->
                         <div id="loaner-asset-card" class="loaner-asset-card">
                             <div style="font-size:11.5px; font-weight:700; color:#065f46; border-bottom: 1px dashed #a7f3d0; padding-bottom:4px; margin-bottom:6px;">📋 該派發代步車動態資產履歷看板</div>
                             <div class="loaner-grid">
@@ -537,7 +572,7 @@
                         </div>
                         
                         <div class="pdi-items-box" style="border-color: #0d9488; background: #fafdfd;">
-                            <div class="pdi-items-title" style="color: #0d9488;">
+                            <div class="pdi-items-title">
                                 <span>🎨 新車特殊作業屬性管制 (烤漆 / 水險)</span>
                                 <a href="https://script.google.com/macros/s/AKfycbzhrVXWOsxlgsnoCrBZoZICpERA3SfRkUUZLlUOnKKxMcwrUzBSSfYTNBLRUJdWk4O5qQ/exec" target="_blank" class="doc-link-btn btn-teal" style="margin-left:auto;">🎨 漆面看板</a>
                             </div>
@@ -552,26 +587,26 @@
 
                             <div id="pdi-sub-internal" class="pdi-dynamic-sub-box" style="border-left-color: #2563eb;">
                                 <div class="form-row">
-                                    <div class="form-group"><label>接收營業所 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-internal-loc" placeholder="請輸入移轉營業所名稱" oninput="renderLine()"></div>
-                                    <div class="form-group"><label>內部調撥單號 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-internal-id" placeholder="e.g. INT-2026-XXXX" oninput="renderLine()"></div>
+                                    <div class="form-group"><label>接收營業所 *</label><input type="text" class="form-control" id="u-pdi-internal-loc" placeholder="請輸入移轉營業所名稱" oninput="renderLine()"></div>
+                                    <div class="form-group"><label>內部調撥單號 *</label><input type="text" class="form-control" id="u-pdi-internal-id" placeholder="e.g. INT-2026-XXXX" oninput="renderLine()"></div>
                                 </div>
                             </div>
 
                             <div id="pdi-sub-warranty" class="pdi-dynamic-sub-box" style="border-left-color: #dc2626;">
                                 <div class="pdi-alert-banner" style="background-color: #fef2f2; color: #991b1b;">⚠️ 系統判定：索賠車。請確保保固事先授權核准單已簽核。</div>
-                                <div class="form-group"><label>事先授權核准案號 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-warranty-id" placeholder="請輸入原廠索賠核准案號" oninput="renderLine()"></div>
+                                <div class="form-group"><label>事先授權核准案號 *</label><input type="text" class="form-control" id="u-pdi-warranty-id" placeholder="請輸入原廠索賠核准案號" oninput="renderLine()"></div>
                             </div>
 
                             <div id="pdi-sub-outsource" class="pdi-dynamic-sub-box" style="border-left-color: #ea580c;">
                                 <div class="form-row">
-                                    <div class="form-group"><label>委外烤漆協力廠 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-outsource-vendor" placeholder="請輸入外包加工廠商" oninput="renderLine()"></div>
-                                    <div class="form-group"><label>預計施工日期 <span style="color:red;">*</span></label><input type="date" class="date-input form-control" id="u-pdi-outsource-date" onchange="renderLine()"></div>
+                                    <div class="form-group"><label>委外烤漆協力廠 *</label><input type="text" class="form-control" id="u-pdi-outsource-vendor" placeholder="請輸入外包加工廠商" oninput="renderLine()"></div>
+                                    <div class="form-group"><label>預計施工日期 *</label><input type="date" class="date-input form-control" id="u-pdi-outsource-date" onchange="renderLine()"></div>
                                 </div>
                             </div>
 
                             <div id="pdi-sub-flood" class="pdi-dynamic-sub-box" style="border-left-color: #0284c7;">
                                 <div class="pdi-alert-banner" style="background-color: #f0f9ff; color: #0369a1;">⚠️ 系統判定：水險車。施作前必須確認已與 PGU 及 三立托運 釐清責任。</div>
-                                <div class="form-group"><label>三方責任簽認案號 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-flood-id" placeholder="請輸入水險責任判定單號" oninput="renderLine()"></div>
+                                <div class="form-group"><label>三方責任簽認案號 *</label><input type="text" class="form-control" id="u-pdi-flood-id" placeholder="請輸入水險責任判定單號" oninput="renderLine()"></div>
                             </div>
                         </div>
 
@@ -646,11 +681,13 @@
 
     </div>
 
+    <!-- 原始燈箱 -->
     <div id="lightboxModal" class="lightbox-modal" onclick="closeLightbox()">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
         <img class="lightbox-content" id="lightboxImg" src="" alt="圖片放大參考" onclick="event.stopPropagation();">
     </div>
 
+    <!-- 📲 帳密對照獨立面板燈箱 -->
     <div class="cred-modal-overlay" id="credModal" onclick="closeCredModalOnOverlay(event)">
         <div class="cred-modal-content">
             <div class="cred-modal-header">
@@ -772,6 +809,11 @@
                     checkLockStatus();
                 });
             });
+            
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('f-service-time').value = now.toISOString().slice(0, 16);
+            
             changeMode('service', document.querySelector('.mode-btn'));
         }
 
@@ -831,6 +873,13 @@
             renderLine();
         }
 
+        function toggleServiceDigitSelector(show) {
+            const block = document.getElementById('srv-digit-select-block');
+            if(show) { block.style.visibility = 'visible'; } 
+            else { block.style.visibility = 'hidden'; }
+            renderLine();
+        }
+
         function changeMode(mode, btn) {
             activeMode = mode;
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -868,13 +917,13 @@
             document.getElementById('form-group-custom1').style.display = (mode === 'custom1') ? 'block' : 'none';
             document.getElementById('form-group-custom2').style.display = (mode === 'custom2') ? 'block' : 'none';
 
-            // 隔離邏輯：當切換至出保固、代步車、PDI模式時，徹底隱藏不相干的費用屬性、點檢與備註區
-            document.getElementById('mid-cost-section').style.display = (mode === 'pdi' || mode === 'loaner' || mode === 'warranty') ? 'none' : 'block';
+            // 隔離邏輯：當切換至出保固、代步車、PDI、定保模式時，徹底隱藏自費分流
+            document.getElementById('mid-cost-section').style.display = (mode === 'pdi' || mode === 'loaner' || mode === 'warranty' || mode === 'service') ? 'none' : 'block';
             document.getElementById('mid-tags-section').style.display = (mode === 'pdi' || mode === 'loaner' || mode === 'warranty') ? 'none' : 'block';
             document.getElementById('mid-notes-section').style.display = (mode === 'pdi' || mode === 'loaner' || mode === 'warranty') ? 'none' : 'block';
             
             const titles = { 
-                service: '定保專案內容', warranty: '技術出保核對資訊與交付備忘', 
+                service: '預約定期保養時程與套餐內容', warranty: '技術出保核對資訊與交付備忘', 
                 loaner: '指派代步車資產登記', major: '道路救援與拖吊派遣目的地確認',
                 insurance: '保險理賠案件開案登記', pdi: '新車 PDI 整備與交車時程',
                 custom1: '衍生追加項目備忘', custom2: '廠外特定整備代辦追蹤'
@@ -908,6 +957,12 @@
             document.getElementById('f-loaner-id').value = "";
             document.getElementById('f-loaner-fuel').value = "滿油";
             onLoanerVehicleChange();
+
+            // 重置定保里程選擇器
+            const defaultBaseRadio = document.querySelector('input[name="srv-base"][value="0"]');
+            if (defaultBaseRadio) defaultBaseRadio.checked = true;
+            toggleServiceDigitSelector(true);
+            document.getElementById('f-service-pkg-digit').value = "4";
 
             // 重置出保固核取方塊
             document.getElementById('chk-war-cif').checked = false;
@@ -974,7 +1029,7 @@
 
             t += `📌【客戶基本資訊】\n• 車主姓名/業務名稱：${name}\n• 車牌/工單號碼：${plate}\n• 進廠車型：${model}\n• 聯絡電話：${phone}\n`;
             
-            if (activeMode !== 'pdi' && activeMode !== 'loaner' && activeMode !== 'warranty' && costAttr !== "") {
+            if (activeMode !== 'pdi' && activeMode !== 'loaner' && activeMode !== 'warranty' && activeMode !== 'service' && costAttr !== "") {
                 t += `• 費用屬性：${costAttr}\n`;
             }
 
@@ -986,9 +1041,28 @@
             }
 
             if (activeMode === 'service') {
-                const pkg = document.getElementById('f-service-pkg').value;
                 const mileage = document.getElementById('u-mileage-srv').value || '0';
-                t += `• 目前里程：${Number(mileage).toLocaleString()} km\n\n📋【定保專案項目】\n• 已選定：${pkg}\n`;
+                const sTime = document.getElementById('f-service-time').value;
+                
+                let formattedTime = '未選定預約時間';
+                if(sTime) {
+                    const d = new Date(sTime);
+                    formattedTime = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+                }
+                
+                const baseSelector = document.querySelector('input[name="srv-base"]:checked');
+                const baseValueStr = baseSelector ? baseSelector.value : '0';
+                
+                let packageOutputStr = '';
+                if(baseValueStr === 'basic') {
+                    packageOutputStr = '基礎機油更換套餐';
+                } else {
+                    const baseVal = parseInt(baseValueStr, 10);
+                    const digitVal = parseInt(document.getElementById('f-service-pkg-digit').value, 10);
+                    packageOutputStr = `${((baseVal + digitVal) * 10000).toLocaleString()} 公里標準定保套餐`;
+                }
+
+                t += `• 目前里程：${Number(mileage).toLocaleString()} km\n\n📋【定保專案項目】\n• 📅 預約進廠時間：${formattedTime}\n• 已選定：${packageOutputStr}\n`;
             } else if (activeMode === 'warranty') {
                 t += `\n💼【原廠保護專案】\n• 案件類別：技術查修/出保固申請\n`;
                 
@@ -1089,7 +1163,7 @@
                 t += `\n🏢【廠外特定整備代辦紀錄】\n• 委外廠商：${c2Vendor}\n• 狀態回裝：外包項目已建檔，進度持續追蹤卡控中。\n`;
             }
 
-            if (activeMode !== 'pdi' && activeMode !== 'loaner' && activeMode !== 'warranty') {
+            if (activeMode !== 'pdi' && activeMode !== 'loaner' && activeMode !== 'warranty' && activeMode !== 'service') {
                 t += `\n🔧【預計現場點檢/主訴項目】\n`;
                 if (activeTags.length > 0) {
                     activeTags.forEach(tag => t += `• ✅ ${tag}\n`);
@@ -1098,23 +1172,22 @@
                 }
             }
 
-            // █ 💡 右側預覽更新：將專屬出保固特殊備註內容同步渲染到 LINE 面板 █
             if (activeMode === 'pdi') {
                 t += `\n💬【PDI 整備備註說明】\n${pdiNotes}\n\n`;
             } else if (activeMode === 'warranty') {
                 t += `\n💬【出保固特殊備註說明】\n${warNotes}\n\n`;
-            } else if (activeMode !== 'loaner') {
+            } else if (activeMode !== 'loaner' && activeMode !== 'service') {
                 t += `\n💬【現場備註說明】\n${notes}\n\n`;
             }
             
-            if (activeMode !== 'pdi' && activeMode !== 'loaner' && activeMode !== 'warranty') {
+            // █ 💡 預防性修正：唯獨在非定保(service)模式下，且非 PDI/代步車/出保固模式時，才輸出此提醒 █
+            if (activeMode !== 'pdi' && activeMode !== 'loaner' && activeMode !== 'warranty' && activeMode !== 'service') {
                 t += `💡 溫馨提醒：本廠未經您的正式授權絕不盲目追加任何維修費用。若經技師診斷確認屬於「新車保固範圍內之責任」，該次道路救援費用將由公司依法吸收；若屬外力損壞、消耗品或過保固，SA 將提供現場照片與自費合約標準向您線上說明。`;
             }
 
             document.getElementById('line-output').innerText = t;
         }
 
-        /* 複製邏輯 */
         function doCopy() {
             const out = document.getElementById('line-output').innerText;
             navigator.clipboard.writeText(out).then(() => {

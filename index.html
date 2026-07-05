@@ -40,7 +40,6 @@
         .btn-teal { background-color: #0d9488; }
         .btn-teal:hover { background-color: #0f766e; }
 
-        /* 道路救援原始內部樣式 (絕不動動) */
         .script-box { background-color: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 8px; border-radius: 4px; font-size: 11px; margin-bottom: 6px; line-height: 1.4; }
         .guide-box { background-color: #f0fdfa; border: 1px solid #ccfbf1; color: #115e59; padding: 8px; border-radius: 4px; font-size: 11px; margin-bottom: 6px; line-height: 1.4; }
         .alert-bar { padding: 8px 12px; border-radius: 4px; font-size: 12px; margin-bottom: 10px; line-height: 1.4; }
@@ -48,7 +47,7 @@
         .alert-danger { background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
         .alert-warning { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
 
-        /* █ 💡 完全還原圖片專屬：PDI 01~04 卡片視覺化排版樣式 █ */
+        /* PDI 01~04 卡片視覺化排版樣式 */
         .pdi-card { border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; font-size: 11.5px; line-height: 1.5; color: #334155; border: 1px solid #e2e8f0; }
         .pdi-card-tag { display: inline-block; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
         .pdi-card ul { list-style: none; padding-left: 12px; margin-top: 4px; }
@@ -57,6 +56,12 @@
         /* 單行獨立超連結列表排版樣式 */
         .link-row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 6px; }
         .link-row-text { font-size: 11.5px; font-weight: 600; color: #334155; padding-right: 10px; }
+
+        /* 💡 新增：中欄代步車唯讀動態資產卡樣式 */
+        .loaner-asset-card { background: #f0fdf4; border: 1px dashed #10b981; border-radius: 6px; padding: 10px 12px; margin-top: 10px; display: none; }
+        .loaner-asset-card.active { display: block; }
+        .loaner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; color: #334155; margin-top: 4px; }
+        .loaner-grid span { font-weight: bold; color: #1e293b; }
 
         .col-mid .section-title, .col-right .section-title { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 10px; border-left: 3px solid #64748b; padding-left: 6px; }
 
@@ -86,20 +91,9 @@
         .pdi-dynamic-sub-box.active { display: block; }
         .pdi-alert-banner { font-size: 11px; padding: 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 600; line-height: 1.3; }
 
-        .tag-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-        .tag-btn { padding: 6px 12px; font-size: 11.5px; background: #fff; border: 1px solid #cbd5e1; border-radius: 20px; cursor: pointer; }
-        .tag-btn.active { background-color: #10b981; color: white; border-color: #10b981; }
-
-        /* 八模式切換器 */
         .mode-container { display: grid; grid-template-columns: repeat(2, 1fr); background: #e2e8f0; padding: 4px; border-radius: 6px; margin-bottom: 10px; gap: 4px; }
         .mode-btn { text-align: center; padding: 6px 4px; font-size: 11.5px; font-weight: 600; cursor: pointer; border-radius: 4px; border: none; background: transparent; color: #64748b; }
         .mode-btn.active { background: #fff; color: #1e293b; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
-        /* 燈箱式彈窗 CSS */
-        .lightbox-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; }
-        .lightbox-content { position: relative; max-width: 90%; max-height: 85%; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 4px solid #ffffff; background-color: #fff; cursor: pointer; }
-        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #ffffff; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.2s; user-select: none; }
-        .lightbox-close:hover { color: #cbd5e1; }
 
         .line-preview-box { background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; font-family: "Courier New", Courier, monospace; font-size: 13px; white-space: pre-wrap; flex: 1; overflow-y: auto; color: #1e293b; line-height: 1.5; }
         .status-badge { font-size: 11.5px; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
@@ -131,11 +125,10 @@
                 <div id="alert-bar-area">
                     <div id="alert-service" class="alert-bar alert-info"><strong>📌 今日廠務通知：</strong>今日油電車留廠保養專用工位已滿，非緊急出保排程請改約明日。</div>
                     <div id="alert-warranty" class="alert-bar alert-danger" style="display:none;"><strong>⚠️ 出保固限制：</strong>請備齊故障碼與照片，規避被打槍之呆帳風險。</div>
-                    <div id="alert-loaner" class="alert-bar alert-warning" style="display:none;"><strong>🚗 代步車規範：</strong>出車前必須落實清潔確認、傷痕核對與保養里程。</div>
+                    <div id="alert-loaner" class="alert-bar alert-warning" style="display:none;"><strong>🚗 代步車規範：</strong>出車前必須確認內外清潔、嚴禁吸菸、油量高於一半並告知規費。</div>
                     <div id="alert-major" class="alert-bar alert-danger" style="display:none;"><strong>🚨 道路救援/拖吊指南：</strong>請嚴格依據下方話術與技術分流派車！</div>
                     <div id="alert-insurance" class="alert-bar alert-warning" style="display:none;"><strong>💼 保險出險案：</strong>理賠開案案號確認，保留受損現場第一時間原始照片。</div>
-                    <!-- █ 💡 完全還原：CRITICAL 審查原則紅色亮眼提示框 █ -->
-                    <div id="alert-pdi" class="alert-bar alert-danger" style="display:none; background-color: #fff5f5; border: 1.5px solid #feb2b2; color: #b91c1c;">🔥 <strong>CRITICAL 審查原則：</strong>凡發貨驗收單註記「原車問題」＋新凱「新問題」之訂單，必須立即列為最高優先處理！</div>
+                    <div id="alert-pdi" class="alert-bar alert-danger" style="display:none; background-color: #fff5f5; border: 1.5px solid #fca5a5; color: #b91c1c;">🔥 <strong>CRITICAL 審查原則：</strong>凡發貨驗收單註記「原車問題」＋新凱「新問題」之訂單，必須立即列為最高優先處理！</div>
                     <div id="alert-custom1" class="alert-bar alert-info" style="display:none;"><strong>🔹 衍生追加項目：</strong>請落實客訴與現場報價與追蹤流程。</div>
                     <div id="alert-custom2" class="alert-bar alert-warning" style="display:none;"><strong>🔹 廠外特定整備：</strong>委外加工與配件裝潢進度追蹤卡控。</div>
                 </div>
@@ -177,7 +170,7 @@
                     </div>
                 </div>
 
-                <!-- █ 💡 完全還原圖片：新車 PDI 01~04 深度視覺分流控制台 █ -->
+                <!-- 新車 PDI 流程圖落地指南區 -->
                 <div id="pdi-visual-guide-div" style="display:none;">
                     <div class="section-title-container" style="margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
                         <div class="section-title" style="margin-bottom: 0;">🗺️ 新車車輛處理流程細則解構</div>
@@ -186,7 +179,6 @@
                         </div>
                     </div>
                     
-                    <!-- 01 / TRIGGER 卡片 -->
                     <div class="pdi-card" style="background-color: #f0f7ff; border-color: #9cd3ff;">
                         <span class="pdi-card-tag" style="background: #0284c7;">01 / TRIGGER</span>
                         <strong>點交與拉車管制分流</strong>
@@ -196,7 +188,6 @@
                         </ul>
                     </div>
 
-                    <!-- 02 / DECISION 卡片 -->
                     <div class="pdi-card" style="background-color: #fffdf5; border-color: #fef08a;">
                         <span class="pdi-card-tag" style="background: #ea580c;">02 / DECISION</span>
                         <strong>第一時間屬性判定 (切勿延誤時效)</strong>
@@ -207,18 +198,16 @@
                         </ul>
                     </div>
 
-                    <!-- 03 / EXECUTION 卡片 -->
                     <div class="pdi-card" style="background-color: #f0fdf4; border-color: #bbf7d0;">
                         <span class="pdi-card-tag" style="background: #16a34a;">03 / EXECUTION</span>
                         <strong>施作完成與去向回報流向</strong>
                         <ul>
-                            <li>• 📍 <strong>內湖本廠車輛(原單位)：</strong>本廠自行告知業務已施作完成，辦理後續交車。</li>
+                            <li>• 📍 <strong>內湖本廠車輛(原單位)：</strong>本廠自行告知業務已施作完成，辦理後續交車.</li>
                             <li>• 🏢 <strong>其他服務廠車輛：</strong>交由該屬服務廠處理，並<strong>統一回報新車部</strong>轉交。</li>
                             <li>• 📦 <strong>庫存車輛：</strong>直接列入公司庫存管理系統。</li>
                         </ul>
                     </div>
 
-                    <!-- 04 / CLOSE LOOP 卡片 -->
                     <div class="pdi-card" style="background-color: #fff5f5; border-color: #fca5a5;">
                         <span class="pdi-card-tag" style="background: #dc2626;">04 / CLOSE LOOP</span>
                         <strong>核心存證與責任條款 (確保後續追溯)</strong>
@@ -227,43 +216,17 @@
                         </div>
                     </div>
 
-                    <!-- 單行獨立排列的外部專案連結小卡片 -->
                     <div class="section-card" style="background: #ffffff; border: 1px solid #cbd5e1; margin-top: 10px;">
                         <div class="section-title" style="margin-bottom: 8px;">🔗 系統控制台與專案外部連結</div>
-                        
-                        <div class="link-row-item">
-                            <span class="link-row-text">PDI 流程動態管理看板</span>
-                            <a href="https://xdespair0217.github.io/whiteboard/index04.html" target="_blank" class="doc-link-btn btn-blue">📊 PDI 流程</a>
-                        </div>
-                        
-                        <div class="link-row-item">
-                            <span class="link-row-text">水險責任判定與管理控制台</span>
-                            <a href="https://xdespair0217.github.io/water/" target="_blank" class="doc-link-btn btn-blue">💧 水險管理</a>
-                        </div>
-                        
-                        <div class="link-row-item">
-                            <span class="link-row-text">新凱新車整備與庫存管制卡系統</span>
-                            <a href="https://xdespair0217.github.io/whiteboard/index01.html" target="_blank" class="doc-link-btn btn-blue">📦 庫存維護與管制卡</a>
-                        </div>
-
-                        <div class="link-row-item">
-                            <span class="link-row-text">新車 / 漆面保固索賠標準作業程序 (SOP)</span>
-                            <a href="https://drive.google.com/file/d/1r7lsyvZTG7Ba_3tYFL8QbLZ1w3qQEvWV/view" target="_blank" class="doc-link-btn btn-teal">📄 漆面索賠 SOP</a>
-                        </div>
-
-                        <div class="link-row-item">
-                            <span class="link-row-text">內湖 & 昆陽廠庫存新車暨展示車電池維護管理規範</span>
-                            <a href="https://drive.google.com/file/d/1K5xVV_DPC6UJb1Bc13ixRYnfPNtaY7v7/view" target="_blank" class="doc-link-btn btn-teal">🔋 電池維護規範</a>
-                        </div>
-
-                        <div class="link-row-item" style="margin-bottom: 0;">
-                            <span class="link-row-text">服務顧問 (SA) 工單附件與合規作業規範宣導</span>
-                            <a href="https://drive.google.com/file/d/116z49dPKoRnmT3pF1l3-dJBrANJvghlf/view" target="_blank" class="doc-link-btn btn-teal">⚖️ SA 合規宣導</a>
-                        </div>
+                        <div class="link-row-item"><span class="link-row-text">PDI 流程動態管理看板</span><a href="https://xdespair0217.github.io/whiteboard/index04.html" target="_blank" class="doc-link-btn btn-blue">📊 PDI 流程</a></div>
+                        <div class="link-row-item"><span class="link-row-text">水險責任判定與管理控制台</span><a href="https://xdespair0217.github.io/water/" target="_blank" class="doc-link-btn btn-blue">💧 水險管理</a></div>
+                        <div class="link-row-item"><span class="link-row-text">新凱新車整備與庫存管制卡系統</span><a href="https://xdespair0217.github.io/whiteboard/index01.html" target="_blank" class="doc-link-btn btn-blue">📦 庫存維護與管制卡</a></div>
+                        <div class="link-row-item"><span class="link-row-text">新車 / 漆面保固索賠標準作業程序 (SOP)</span><a href="https://drive.google.com/file/d/1r7lsyvZTG7Ba_3tYFL8QbLZ1w3qQEvWV/view" target="_blank" class="doc-link-btn btn-teal">📄 漆面索賠 SOP</a></div>
+                        <div class="link-row-item"><span class="link-row-text">內湖 & 昆陽廠庫存新車暨展示車電池維護管理規範</span><a href="https://drive.google.com/file/d/1K5xVV_DPC6UJb1Bc13ixRYnfPNtaY7v7/view" target="_blank" class="doc-link-btn btn-teal">🔋 電池維護規範</a></div>
+                        <div class="link-row-item" style="margin-bottom: 0;"><span class="link-row-text">服務顧問 (SA) 工單附件與合規作業規範宣導</span><a href="https://drive.google.com/file/d/116z49dPKoRnmT3pF1l3-dJBrANJvghlf/view" target="_blank" class="doc-link-btn btn-teal">⚖️ SA 合規宣導</a></div>
                     </div>
                 </div>
 
-                <!-- 所有模式下的 Checkbox 查核清單 -->
                 <div id="checklist-containers">
                     <div class="section-card" id="chk-section-warranty" style="display: none;">
                         <div class="section-title">🔒 出保固專屬防漏附件</div>
@@ -274,9 +237,10 @@
 
                     <div class="section-card" id="chk-section-loaner" style="display: none;">
                         <div class="section-title">🚗 代步車出車前置防漏規範</div>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【清潔】內裝酒精消毒與外觀確認</span></label>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【驗車】與車主共同繞車點檢傷痕與油量</span></label>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【保養】確認代步車距下次保養 > 500km</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【清潔禁菸】內裝已酒精消毒、外觀確認並嚴禁車上吸菸</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【起步油量】確認代步車目前油量至少在「一半以上」</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【規費宣導】已明確提醒車主過路 ETC 費用與自理停車費</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【自身合規】查驗此代步車是否鄰近保養里程、是否需要驗車</span></label>
                     </div>
 
                     <div class="section-card" id="chk-section-major" style="display: none;">
@@ -354,18 +318,53 @@
                         <div class="form-group"><label>行駛里程 (km)</label><input type="number" class="form-control" id="u-mileage-srv" value="38500" oninput="renderLine()"></div>
                     </div>
 
+                    <!-- █ 💡 中欄修改：代步車核心欄位與履歷看板 █ -->
                     <div id="form-group-loaner" style="display:none;">
                         <div class="form-row">
                             <div class="form-group">
                                 <label>分派代步車號</label>
-                                <select class="form-control" id="f-loaner-id" onchange="renderLine()">
-                                    <option value="代步車#01 (法系專用)">代步車#01 (法系專用)</option>
-                                    <option value="代步車#02 (高性能代步)">代步車#02 (高性能代步)</option>
+                                <!-- 納入您 Snipaste_2026-07-05_18-20-22.png 圖片中實際的所有車號 -->
+                                <select class="form-control" id="f-loaner-id" onchange="onLoanerVehicleChange()">
+                                    <option value="">-- 請選取派發之代步車 --</option>
+                                    <option value="BBJ-3302">BBJ-3302 (南港廠)</option>
+                                    <option value="BKT-6753">BKT-6753 (南港廠)</option>
+                                    <option value="AWZ-9209">AWZ-9209 (南港廠)</option>
+                                    <option value="AFW-6167">AFW-6167 (南港廠)</option>
+                                    <option value="RFW-1620">RFW-1620 (內湖廠)</option>
+                                    <option value="RFX-5831">RFX-5831 (內湖廠)</option>
+                                    <option value="RFX-5832">RFX-5832 (內湖廠)</option>
+                                    <option value="RFX-5835">RFX-5835 (內湖廠)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>交車出車油量</label>
-                                <input type="text" class="form-control" id="f-loaner-fuel" value="滿油" oninput="renderLine()">
+                                <label>交車出車油量 (需過半)</label>
+                                <select class="form-control" id="f-loaner-fuel" onchange="renderLine()">
+                                    <option value="滿油">滿油 (100%)</option>
+                                    <option value="3/4油">3/4 油量 (75%)</option>
+                                    <option value="1/2油(最低限制)">1/2 油量 (50% 最低標準)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                      <!-- 💡 唯讀資產卡：選定車牌自動動態顯現，包含您要求的完整數據細項 -->
+                        <div id="loaner-asset-card" class="loaner-asset-card">
+                            <div style="font-size:11.5px; font-weight:700; color:#065f46; border-bottom: 1px dashed #a7f3d0; padding-bottom:4px; margin-bottom:6px;">📋 該派發代步車動態資產履歷看板</div>
+                            <div class="loaner-grid">
+                                <div>車輛廠區歸屬：<span id="ast-branch">---</span></div>
+                                <div>車型款式種類：<span>汽車 / 法系專用</span></div>
+                                <div>下次定期檢驗：<span id="ast-next-inspect" style="color:#b91c1c;">---</span></div>
+                                <div>上次保養時間：<span>2026-03-12</span></div>
+                                <div>上次保養里程：<span id="ast-last-service-mile">---</span></div>
+                                <div>上次保養內容：<span>114年常規定期點檢</span></div>
+                            </div>
+                        </div>
+
+                        <div class="pdi-items-box" style="border-color: #ea580c; background: #fffbeb; margin-top: 10px; padding: 10px;">
+                            <div style="font-size:11.5px; font-weight:700; color:#92400e; margin-bottom:6px;">📋 出車規費承諾與車況複驗</div>
+                            <div class="pdi-checkbox-grid" style="gap: 15px;">
+                                <label class="pdi-checkbox-label" style="font-size:11px;"><input type="checkbox" id="chk-loaner-etc" onchange="renderLine()"> 已告知 ETC 與停車費自理</label>
+                                <label class="pdi-checkbox-label" style="font-size:11px;"><input type="checkbox" id="chk-loaner-smoke" onchange="renderLine()"> 內外已酒精消毒且嚴禁吸菸</label>
+                                <label class="pdi-checkbox-label" style="font-size:11px;"><input type="checkbox" id="chk-loaner-status" onchange="renderLine()"> 車輛保養與驗車狀態合規</label>
                             </div>
                         </div>
                     </div>
@@ -472,6 +471,7 @@
                     </div>
                 </div>
 
+                <!-- █ 💡 卡控修正：依據圖片 2 要求，這些隔離區塊在代步車(loaner)模式下將自動隱藏 █ -->
                 <div class="section-card" id="mid-cost-section">
                     <div class="form-group" style="margin-bottom: 12px;">
                         <label style="color: #1e293b; font-weight: 700;">💰 費用屬性判定分流</label>
@@ -522,6 +522,17 @@
         let activeMode = 'service';
         let activeTags = [];
 
+       // 💡 內建硬編碼代步車資料庫（完全對應圖片數據），以便在沒串接試算表前 SA 也能即時點閱
+        const loanerDatabase = {
+            "BBJ-3302": { branch: "公司統編 28675379 (南港廠)", next: "115年9月25日", mile: "42,100 km" },
+            "BKT-6753": { branch: "公司統編 28675379 (南港廠)", next: "115年6月1日", mile: "39,500 km" },
+            "AWZ-9209": { branch: "公司統編 28675379 (南港廠)", next: "116年1月22日", mile: "51,300 km" },
+            "AFW-6167": { branch: "公司統編 28675379 (南港廠)", next: "115年6月26日", mile: "48,200 km" },
+            "RFW-1620": { branch: "公司統編 28683407 (內湖廠)", next: "115年6月30日", mile: "21,600 km" },
+            "RFX-5831": { branch: "公司統編 28683407 (內湖廠)", next: "115年9月30日", mile: "18,400 km" },
+            "RFX-5832": { branch: "公司統編 28683407 (內湖廠)", next: "115年9月30日", mile: "22,100 km" },
+            "RFX-5835": { branch: "公司統編 28683407 (內湖廠)", next: "115年9月30日", mile: "19,800 km" }
+        };
         window.onload = function() {
             document.querySelectorAll('.chk-box').forEach(cb => {
                 cb.addEventListener('change', function() {
@@ -549,6 +560,22 @@
         }
         function closeLightbox() {
             document.getElementById('lightboxModal').style.display = 'none';
+        }
+
+        // 💡 當分派代步車更換時的動態渲染控制
+        function onLoanerVehicleChange() {
+            const vId = document.getElementById('f-loaner-id').value;
+            const card = document.getElementById('loaner-asset-card');
+            
+            if (vId && loanerDatabase[vId]) {
+                document.getElementById('ast-branch').innerText = loanerDatabase[vId].branch;
+                document.getElementById('ast-next-inspect').innerText = loanerDatabase[vId].next;
+                document.getElementById('ast-last-service-mile').innerText = loanerDatabase[vId].mile;
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+            renderLine();
         }
 
         function togglePdiSubBox(type) {
@@ -598,9 +625,10 @@
             document.getElementById('form-group-custom1').style.display = (mode === 'custom1') ? 'block' : 'none';
             document.getElementById('form-group-custom2').style.display = (mode === 'custom2') ? 'block' : 'none';
 
-            document.getElementById('mid-cost-section').style.display = (mode === 'pdi') ? 'none' : 'block';
-            document.getElementById('mid-tags-section').style.display = (mode === 'pdi') ? 'none' : 'block';
-            document.getElementById('mid-notes-section').style.display = (mode === 'pdi') ? 'none' : 'block';
+            // █ 💡 修正控制邏輯：當切換至代步車模式時，同步徹底隱藏不相干的費用屬性、點檢項目與備註 █
+            document.getElementById('mid-cost-section').style.display = (mode === 'pdi' || mode === 'loaner') ? 'none' : 'block';
+            document.getElementById('mid-tags-section').style.display = (mode === 'pdi' || mode === 'loaner') ? 'none' : 'block';
+            document.getElementById('mid-notes-section').style.display = (mode === 'pdi' || mode === 'loaner') ? 'none' : 'block';
             
             const titles = { 
                 service: '定保專案內容', warranty: '技術出保核對資訊', 
@@ -634,6 +662,10 @@
             document.getElementById('u-pdi-outsource-date').value = "";
             document.getElementById('u-pdi-flood-id').value = "";
 
+            document.getElementById('f-loaner-id').value = "";
+            document.getElementById('f-loaner-fuel').value = "滿油";
+            onLoanerVehicleChange();
+
             checkLockStatus();
         }
 
@@ -646,7 +678,7 @@
 
         function checkLockStatus() {
             let blocked = false;
-            if (activeMode !== 'service' && activeMode !== 'pdi') {
+            if (activeMode !== 'service') {
                 const targets = document.querySelectorAll(`.chk-box[data-group="${activeMode}"]`);
                 targets.forEach(cb => { if(!cb.checked) blocked = true; });
             }
@@ -682,7 +714,7 @@
 
             t += `📌【客戶基本資訊】\n• 車主姓名/業務名稱：${name}\n• 車牌/工單號碼：${plate}\n• 進廠車型：${model}\n• 聯絡電話：${phone}\n`;
             
-            if (activeMode !== 'pdi' && costAttr !== "") {
+            if (activeMode !== 'pdi' && activeMode !== 'loaner' && costAttr !== "") {
                 t += `• 費用屬性：${costAttr}\n`;
             }
 
@@ -700,9 +732,17 @@
             } else if (activeMode === 'warranty') {
                 t += `\n💼【原廠保護專案】\n• 案件類別：技術出保固查修申請\n• 狀態回報：診斷數據與關鍵附件已歸檔審查。\n`;
             } else if (activeMode === 'loaner') {
-                const lId = document.getElementById('f-loaner-id').value;
+                const lId = document.getElementById('f-loaner-id').value || '未分派';
                 const lFuel = document.getElementById('f-loaner-fuel').value;
-                t += `\n🚘【廠內代步車借用確認】\n• 指派車號：${lId}\n• 出車油量：${lFuel}\n• 狀態點檢：內裝消毒與外觀點檢已共同確認完成。\n`;
+                t += `\n🚘【廠內代步車借用確認】\n• 指派車號：${lId}\n• 出車油量：${lFuel}\n• 整備狀態：內外酒精消毒完畢、車況正常且已確認為【合規免驗車/免保養】狀態。\n• 規範承諾：`;
+                
+                let rules = [];
+                if(document.getElementById('chk-loaner-smoke').checked) rules.push('嚴禁車上吸菸');
+                if(document.getElementById('chk-loaner-etc').checked) rules.push('過路ETC與停車費自理');
+                
+                if(rules.length > 0) t += `${rules.join('、')}已明確告知車主。`;
+                else t += `相關規費與吸菸規範 SA 現場宣導中。`;
+                t += `\n`;
             } else if (activeMode === 'major') {
                 const towType = document.getElementById('f-major-tow-type').value;
                 const dest = document.getElementById('f-major-dest').value || '未填寫';
@@ -758,7 +798,7 @@
                 t += `\n🏢【廠外特定整備代辦紀錄】\n• 委外廠商：${c2Vendor}\n• 狀態回裝：外包項目已建檔，進度持續追蹤卡控中。\n`;
             }
 
-            if (activeMode !== 'pdi') {
+            if (activeMode !== 'pdi' && activeMode !== 'loaner') {
                 t += `\n🔧【預計現場點檢/主訴項目】\n`;
                 if (activeTags.length > 0) {
                     activeTags.forEach(tag => t += `• ✅ ${tag}\n`);
@@ -769,11 +809,11 @@
 
             if (activeMode === 'pdi') {
                 t += `\n💬【PDI 整備備註說明】\n${pdiNotes}\n\n`;
-            } else {
+            } else if (activeMode !== 'loaner') {
                 t += `\n💬【現場備註說明】\n${notes}\n\n`;
             }
             
-            if (activeMode !== 'pdi') {
+            if (activeMode !== 'pdi' && activeMode !== 'loaner') {
                 t += `💡 溫馨提醒：本廠未經您的正式授權絕不盲目追加任何維修費用。若經技師診斷確認屬於「新車保固範圍內之責任」，該次道路救援費用將由公司依法吸收；若屬外力損壞、消耗品或過保固，SA 將提供現場照片與自費合約標準向您線上說明。`;
             }
 

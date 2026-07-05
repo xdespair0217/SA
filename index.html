@@ -2,18 +2,16 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <!-- === 精準微調 1：解除 Viewport 鎖定，允許手機雙指自由縮放 (user-scalable=yes) === -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=3.0">
-    <title>SA 接待一頁式核心工作台 (v1.8 屬性完全動態分流版)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA 接待一頁式核心工作台 (v2.6 PDI動態深度分流版)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Microsoft JhengHei", sans-serif; }
-        body { background-color: #f4f6f9; color: #333; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { background-color: #f4f6f9; color: #33; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         header { background-color: #1e293b; color: #ffffff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; flex-shrink: 0; }
         header h1 { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         header .version-tag { background-color: #3b82f6; color: white; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
         
-        /* === 精準微調 2：允許主容器在手機等小螢幕上可以橫向溢出、順暢左右拖移 (overflow-x: auto) === */
-        .main-container { display: flex; flex: 1; overflow-x: auto; overflow-y: hidden; background-color: #e2e8f0; gap: 12px; padding: 12px; -webkit-overflow-scrolling: touch; }
+        .main-container { display: flex; flex: 1; overflow: hidden; background-color: #e2e8f0; gap: 12px; padding: 12px; }
         .column { background: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
         
         .col-left { flex: 1.2; min-width: 340px; }
@@ -25,37 +23,42 @@
 
         .section-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }
         
-        /* 左欄樣式緊湊化優化 */
+        /* 左欄查核樣式 */
         .col-left .section-title { font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 6px; border-left: 3px solid #64748b; padding-left: 6px; }
         .col-left .check-item { padding: 6px 10px; margin-bottom: 4px; font-size: 11.5px; border-radius: 4px; background: #ffffff; border: 1px solid #e2e8f0; line-height: 1.4; display: flex; align-items: center; cursor: pointer; }
         .col-left .check-item input[type="checkbox"] { width: 14px; height: 14px; margin-right: 8px; }
         .col-left .check-item.checked { border-color: #cbd5e1; background-color: #f8fafc; }
         .col-left .check-item.checked span { color: #94a3b8; text-decoration: line-through; }
         
-        /* 紅框處新增按鈕按鈕群組 CSS */
         .col-left .section-title-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .doc-btn-group { display: flex; gap: 4px; }
-        .doc-link-btn { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; font-size: 10.5px; font-weight: bold; text-decoration: none; border-radius: 4px; color: white; transition: background-color 0.2s; cursor: pointer; }
+        .doc-btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
+        .doc-link-btn { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; font-size: 10.5px; font-weight: bold; text-decoration: none; border-radius: 4px; color: white; transition: background-color 0.2s; cursor: pointer; border: none; line-height: 1.2; }
         .btn-blue { background-color: #2563eb; }
         .btn-blue:hover { background-color: #1d4ed8; }
         .btn-orange { background-color: #ea580c; }
         .btn-orange:hover { background-color: #c2410c; }
+        .btn-teal { background-color: #0d9488; }
+        .btn-teal:hover { background-color: #0f766e; }
 
-        /* 燈箱式名片彈窗專屬 CSS */
-        .lightbox-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; }
-        .lightbox-content { relative: true; max-width: 90%; max-height: 85%; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 4px solid #ffffff; background-color: #fff; cursor: pointer; }
-        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #ffffff; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.2s; user-select: none; }
-        .lightbox-close:hover { color: #cbd5e1; }
-        
+        /* 道路救援原始內部樣式 (絕不動動) */
         .script-box { background-color: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 8px; border-radius: 4px; font-size: 11px; margin-bottom: 6px; line-height: 1.4; }
         .guide-box { background-color: #f0fdfa; border: 1px solid #ccfbf1; color: #115e59; padding: 8px; border-radius: 4px; font-size: 11px; margin-bottom: 6px; line-height: 1.4; }
+        .alert-bar { padding: 8px 12px; border-radius: 4px; font-size: 12px; margin-bottom: 10px; line-height: 1.4; }
+        .alert-info { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .alert-danger { background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+        .alert-warning { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+
+        /* █ 💡 完全還原圖片專屬：PDI 01~04 卡片視覺化排版樣式 █ */
+        .pdi-card { border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; font-size: 11.5px; line-height: 1.5; color: #334155; border: 1px solid #e2e8f0; }
+        .pdi-card-tag { display: inline-block; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
+        .pdi-card ul { list-style: none; padding-left: 12px; margin-top: 4px; }
+        .pdi-card li { position: relative; margin-bottom: 2px; }
+
+        /* 單行獨立超連結列表排版樣式 */
+        .link-row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 6px; }
+        .link-row-text { font-size: 11.5px; font-weight: 600; color: #334155; padding-right: 10px; }
 
         .col-mid .section-title, .col-right .section-title { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 10px; border-left: 3px solid #64748b; padding-left: 6px; }
-
-        .alert-bar { padding: 10px 12px; border-radius: 6px; font-size: 11.5px; margin-bottom: 6px; line-height: 1.4; display: flex; gap: 8px; }
-        .alert-danger { background-color: #fef2f2; border: 1px solid #fee2e2; color: #991b1b; }
-        .alert-warning { background-color: #fffbeb; border: 1px solid #fef3c7; color: #92400e; }
-        .alert-info { background-color: #f0fdf4; border: 1px solid #dcfce7; color: #166534; }
 
         /* 表單元素 */
         .form-group { margin-bottom: 10px; }
@@ -65,14 +68,38 @@
         .form-row { display: flex; gap: 8px; }
         .form-row .form-group { flex: 1; }
 
+        .form-label-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+
+        /* PDI 中欄延伸框框排版 */
+        .pdi-items-box { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 10px; margin-top: 10px; }
+        .pdi-items-title { font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .pdi-checkbox-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: 12px; color: #33; margin-bottom: 8px; }
+        .pdi-checkbox-label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; }
+        .pdi-checkbox-label input { width: 14px; height: 14px; cursor: pointer; }
+        .pdi-append-row { border-top: 1px dashed #e2e8f0; padding-top: 8px; margin-top: 6px; font-size: 12px; color: #ca8a04; font-weight: 600; }
+
+        /* PDI 特殊作業屬性單選樣式 */
+        .pdi-radio-group { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0; background: #ffffff; padding: 8px; border: 1px solid #e2e8f0; border-radius: 4px; }
+        .pdi-radio-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; cursor: pointer; color: #334155; }
+        .pdi-radio-label input { width: 14px; height: 14px; accent-color: #0d9488; }
+        .pdi-dynamic-sub-box { display: none; background: #ffffff; border-left: 3px solid #3b82f6; padding: 8px 10px; margin-top: 6px; border-radius: 0 4px 4px 0; font-size: 12px; }
+        .pdi-dynamic-sub-box.active { display: block; }
+        .pdi-alert-banner { font-size: 11px; padding: 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 600; line-height: 1.3; }
+
         .tag-grid { display: flex; flex-wrap: wrap; gap: 6px; }
         .tag-btn { padding: 6px 12px; font-size: 11.5px; background: #fff; border: 1px solid #cbd5e1; border-radius: 20px; cursor: pointer; }
         .tag-btn.active { background-color: #10b981; color: white; border-color: #10b981; }
 
-        /* 六模式切換器 */
+        /* 八模式切換器 */
         .mode-container { display: grid; grid-template-columns: repeat(2, 1fr); background: #e2e8f0; padding: 4px; border-radius: 6px; margin-bottom: 10px; gap: 4px; }
         .mode-btn { text-align: center; padding: 6px 4px; font-size: 11.5px; font-weight: 600; cursor: pointer; border-radius: 4px; border: none; background: transparent; color: #64748b; }
         .mode-btn.active { background: #fff; color: #1e293b; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* 燈箱式彈窗 CSS */
+        .lightbox-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; }
+        .lightbox-content { position: relative; max-width: 90%; max-height: 85%; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 4px solid #ffffff; background-color: #fff; cursor: pointer; }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #ffffff; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.2s; user-select: none; }
+        .lightbox-close:hover { color: #cbd5e1; }
 
         .line-preview-box { background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; font-family: "Courier New", Courier, monospace; font-size: 13px; white-space: pre-wrap; flex: 1; overflow-y: auto; color: #1e293b; line-height: 1.5; }
         .status-badge { font-size: 11.5px; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
@@ -82,72 +109,162 @@
         .action-btn { width: 100%; padding: 12px; font-size: 14px; font-weight: bold; color: white; background-color: #8b5cf6; border: none; border-radius: 6px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .action-btn:disabled { background-color: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
         .blocker-hint { color: #ef4444; font-size: 11.5px; text-align: center; margin-top: 6px; font-weight: 600; display: none; }
+        
+        .header-hint-text { font-size: 11px; font-weight: normal; color: #dc2626; background: #fef2f2; border: 1px solid #fee2e2; padding: 2px 8px; border-radius: 4px; }
+
+        .mid-check-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #b91c1c; cursor: pointer; background: #fef2f2; padding: 1px 6px; border: 1px dashed #fca5a5; border-radius: 4px; line-height: 1; }
+        .mid-check-label input { width: 12px; height: 12px; cursor: pointer; margin: 0; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🛠️ SA 接待一頁式核心工作台 <span class="version-tag">v1.8 屬性完全動態分流版</span></h1>
+        <h1>🛠️ SA 接待一頁式核心工作台 <span class="version-tag">v2.6 PDI動態深度分流版</span></h1>
         <div id="top-status-indicator" class="status-badge status-ready">🟢 系統就緒</div>
     </header>
 
     <div class="main-container">
 
-        <!-- ==================== 左欄：規範提醒、防呆查核、拖吊話術指南 ==================== -->
         <div class="column col-left">
             <div class="col-header"><span>📋 模式專屬規範查核與指南 (左邊)</span></div>
             <div class="col-body">
-                <!-- 頂部動態提示 -->
                 <div id="alert-bar-area">
                     <div id="alert-service" class="alert-bar alert-info"><strong>📌 今日廠務通知：</strong>今日油電車留廠保養專用工位已滿，非緊急出保排程請改約明日。</div>
                     <div id="alert-warranty" class="alert-bar alert-danger" style="display:none;"><strong>⚠️ 出保固限制：</strong>請備齊故障碼與照片，規避被打槍之呆帳風險。</div>
                     <div id="alert-loaner" class="alert-bar alert-warning" style="display:none;"><strong>🚗 代步車規範：</strong>出車前必須落實清潔確認、傷痕核對與保養里程。</div>
-                    <div id="alert-major" class="alert-bar alert-danger" style="display:none;"><strong>🚨 道路救援/重大大修：</strong>請嚴格依據下方話術與技術分流派車！</div>
+                    <div id="alert-major" class="alert-bar alert-danger" style="display:none;"><strong>🚨 道路救援/拖吊指南：</strong>請嚴格依據下方話術與技術分流派車！</div>
                     <div id="alert-insurance" class="alert-bar alert-warning" style="display:none;"><strong>💼 保險出險案：</strong>理賠開案案號確認，保留受損現場第一時間原始照片。</div>
-                    <div id="alert-pdi" class="alert-bar alert-info" style="display:none;"><strong>✨ 新車 PDI 整備：</strong>全車漆面與前擋玻璃外觀點檢，移除運輸安全防護。</div>
+                    <!-- █ 💡 完全還原：CRITICAL 審查原則紅色亮眼提示框 █ -->
+                    <div id="alert-pdi" class="alert-bar alert-danger" style="display:none; background-color: #fff5f5; border: 1.5px solid #feb2b2; color: #b91c1c;">🔥 <strong>CRITICAL 審查原則：</strong>凡發貨驗收單註記「原車問題」＋新凱「新問題」之訂單，必須立即列為最高優先處理！</div>
+                    <div id="alert-custom1" class="alert-bar alert-info" style="display:none;"><strong>🔹 衍生追加項目：</strong>請落實客訴與現場報價與追蹤流程。</div>
+                    <div id="alert-custom2" class="alert-bar alert-warning" style="display:none;"><strong>🔹 廠外特定整備：</strong>委外加工與配件裝潢進度追蹤卡控。</div>
                 </div>
 
-                <!-- 道路救援話術引導 (重大維修/拖吊模式專屬) -->
                 <div id="script-towing-div" style="display:none;">
                     <div class="section-title-container">
                         <div class="section-title">🗣️ 1. 道路救援梯次防禦引導話術</div>
                         <div class="doc-btn-group">
+                            <button onclick="openLightbox('towing-slip')" class="doc-link-btn btn-teal" title="彈出拖吊單單據參考圖">📋 拖吊單</button>
                             <a href="https://drive.google.com/file/d/1e1cOy6G7Err4aYL9Ci0ahLcDA49jwlGp/view?usp=sharing" target="_blank" class="doc-link-btn btn-blue" title="點開完整道路救援與特殊拖吊標準作業SOP">📄 完整SOP</a>
-                            <span onclick="openLightbox()" class="doc-link-btn btn-orange" title="燈箱彈出楊明得拖吊業者名片">🎴 楊明得</span>
+                            <span onclick="openLightbox('card')" class="doc-link-btn btn-orange" title="燈箱彈出楊明得拖吊業者名片">🎴 楊明得</span>
                         </div>
                     </div>
                     <div class="script-box">
                         <strong>第1順位 (引導免費權益)：</strong><br>
-                        「林先生/小姐您好，您若有信用卡或保險免費拖吊，這可以省一筆拖吊費。信用卡或投保的車險，通常都有提供免費的道路救援拖吊服務，這可以額外讓您省一筆費用！」[cite: 2]
+                        「林先生/小姐您好，您若有信用卡或保險免費拖吊，這可以省一筆拖吊費。信用卡或投保的車險，通常都有提供免費的道路救援拖吊服務，這可以額外讓您省一筆費用！」
                     </div>
                     <div class="script-box">
                         <strong>第2順位 (自費推薦)：</strong><br>
-                        「若您目前沒有合適的免費拖吊管道，我們廠內有長期配合的專業拖吊公司。如果您需要，我們可以協助幫您接洽派遣，後續費用再依業者標準結算。」[cite: 2]
+                        「若您目前沒有合適的免費拖吊管道，我們廠內有長期配合的專業拖吊公司。如果您需要，我們可以協助幫您接洽派遣，後續費用再依業者標準結算。」
                     </div>
                 </div>
 
-                <!-- 技術派遣分流決策指南 (重大維修/拖吊模式專屬) -->
                 <div id="guide-towing-div" style="display:none;">
-                    <div class="section-title">🔀 2. 救援情境技術分流機制</div>
+                    <div class="section-title">𔔀 2. 救援情境技術分流機制</div>
                     <div class="guide-box">
                         <strong>類別 A (常規拖吊流程)：</strong><br>
-                        • 故障但可切換至 N 檔，傳動未鎖死。[cite: 2]<br>
-                        • 📞 派單窗口：撥打【全業汽車拖吊】市話 <strong>(02)8787-1298</strong>。[cite: 2]
+                        • 故障但可切換至 N 檔，傳動未鎖死。<br>
+                        • 📞 派單窗口：撥打【全業汽車拖吊】市話 <strong>(02)8787-1298</strong>。
                     </div>
                     <div class="guide-box">
                         <strong>類別 B (特殊拖吊流程 - 繞過抽成優化成本)：</strong><br>
-                        • 近3年新車、電子排檔鎖死 P 檔、斷電、車輪卡死。[cite: 2]<br>
-                        • 📞 派單窗口：直撥負責人【楊明得(阿賢)】手機 <strong>0937-047-089</strong>。[cite: 2]<br>
-                        • ⚠️ 叮嚀：需一大一小協同，必架滑板/輔助輪保護傳動。[cite: 2]
+                        • 近3年新車、電子排檔鎖死 P 檔、斷電、車輪卡死。<br>
+                        • 📞 派單窗口：直撥負責人【楊明得(阿賢)】手機 <strong>0937-047-089</strong>。<br>
+                        • ⚠️ 叮嚀：需一大一小協同，必架滑板/輔助輪保護傳動。
                     </div>
                     <div class="guide-box" style="background-color: #fef2f2; border: 1px solid #fee2e2; color: #991b1b;">
-                        📍 <strong>目的地指派：</strong>務必明確告知拖吊業者，指定拖往<strong>「內湖民善街70號」</strong>。[cite: 2]
+                        📍 <strong>目的地指派：</strong>務必明確告知拖吊業者，指定拖往<strong>「內湖民善街70號」</strong>。
                     </div>
                 </div>
 
-                <!-- 各模式對應的防呆查核清單（非該模式屬性時會透過 JS 完全隱藏） -->
+                <!-- █ 💡 完全還原圖片：新車 PDI 01~04 深度視覺分流控制台 █ -->
+                <div id="pdi-visual-guide-div" style="display:none;">
+                    <div class="section-title-container" style="margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
+                        <div class="section-title" style="margin-bottom: 0;">🗺️ 新車車輛處理流程細則解構</div>
+                        <div class="doc-btn-group">
+                            <button onclick="openLightbox('pdi-flow')" class="doc-link-btn btn-blue">🗺️ 原始流程圖</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 01 / TRIGGER 卡片 -->
+                    <div class="pdi-card" style="background-color: #f0f7ff; border-color: #9cd3ff;">
+                        <span class="pdi-card-tag" style="background: #0284c7;">01 / TRIGGER</span>
+                        <strong>點交與拉車管制分流</strong>
+                        <ul>
+                            <li>• 🔴 <strong>有問題車輛：</strong>拉至<span style="color:#0284c7; font-weight:bold;">內湖保養廠</span>後續作業，由內湖廠開單處理。</li>
+                            <li>• 🚫 <strong>無問題車輛：</strong>新車部自行輪調挪走，<span style="color:#dc2626; font-weight:bold;">嚴禁佔用廠內空間</span>。</li>
+                        </ul>
+                    </div>
+
+                    <!-- 02 / DECISION 卡片 -->
+                    <div class="pdi-card" style="background-color: #fffdf5; border-color: #fef08a;">
+                        <span class="pdi-card-tag" style="background: #ea580c;">02 / DECISION</span>
+                        <strong>第一時間屬性判定 (切勿延誤時效)</strong>
+                        <ul>
+                            <li>• ⚠️ <strong>水險車：</strong>施工前置。必須先與 <strong>PGU</strong> 和 <strong>三立托運</strong> 溝通確認後方可施工。</li>
+                            <li>• 🔧 <strong>索賠車：</strong>授權前置。依保固作業提供報價單進行事先授權，核准後方可施工。</li>
+                            <li style="color:#b91c1c; font-weight:bold; margin-top:2px;">📍 空間盲點：嚴禁未經確認 / 授權即自行施工！</li>
+                        </ul>
+                    </div>
+
+                    <!-- 03 / EXECUTION 卡片 -->
+                    <div class="pdi-card" style="background-color: #f0fdf4; border-color: #bbf7d0;">
+                        <span class="pdi-card-tag" style="background: #16a34a;">03 / EXECUTION</span>
+                        <strong>施作完成與去向回報流向</strong>
+                        <ul>
+                            <li>• 📍 <strong>內湖本廠車輛(原單位)：</strong>本廠自行告知業務已施作完成，辦理後續交車。</li>
+                            <li>• 🏢 <strong>其他服務廠車輛：</strong>交由該屬服務廠處理，並<strong>統一回報新車部</strong>轉交。</li>
+                            <li>• 📦 <strong>庫存車輛：</strong>直接列入公司庫存管理系統。</li>
+                        </ul>
+                    </div>
+
+                    <!-- 04 / CLOSE LOOP 卡片 -->
+                    <div class="pdi-card" style="background-color: #fff5f5; border-color: #fca5a5;">
+                        <span class="pdi-card-tag" style="background: #dc2626;">04 / CLOSE LOOP</span>
+                        <strong>核心存證與責任條款 (確保後續追溯)</strong>
+                        <div style="margin-top: 4px; font-weight: 500;">
+                            現場必須確實落實：①完整保存資料 ②高解析度損壞/維修相片 ③關鍵施工/動態測試影片存證。
+                        </div>
+                    </div>
+
+                    <!-- 單行獨立排列的外部專案連結小卡片 -->
+                    <div class="section-card" style="background: #ffffff; border: 1px solid #cbd5e1; margin-top: 10px;">
+                        <div class="section-title" style="margin-bottom: 8px;">🔗 系統控制台與專案外部連結</div>
+                        
+                        <div class="link-row-item">
+                            <span class="link-row-text">PDI 流程動態管理看板</span>
+                            <a href="https://xdespair0217.github.io/whiteboard/index04.html" target="_blank" class="doc-link-btn btn-blue">📊 PDI 流程</a>
+                        </div>
+                        
+                        <div class="link-row-item">
+                            <span class="link-row-text">水險責任判定與管理控制台</span>
+                            <a href="https://xdespair0217.github.io/water/" target="_blank" class="doc-link-btn btn-blue">💧 水險管理</a>
+                        </div>
+                        
+                        <div class="link-row-item">
+                            <span class="link-row-text">新凱新車整備與庫存管制卡系統</span>
+                            <a href="https://xdespair0217.github.io/whiteboard/index01.html" target="_blank" class="doc-link-btn btn-blue">📦 庫存維護與管制卡</a>
+                        </div>
+
+                        <div class="link-row-item">
+                            <span class="link-row-text">新車 / 漆面保固索賠標準作業程序 (SOP)</span>
+                            <a href="https://drive.google.com/file/d/1r7lsyvZTG7Ba_3tYFL8QbLZ1w3qQEvWV/view" target="_blank" class="doc-link-btn btn-teal">📄 漆面索賠 SOP</a>
+                        </div>
+
+                        <div class="link-row-item">
+                            <span class="link-row-text">內湖 & 昆陽廠庫存新車暨展示車電池維護管理規範</span>
+                            <a href="https://drive.google.com/file/d/1K5xVV_DPC6UJb1Bc13ixRYnfPNtaY7v7/view" target="_blank" class="doc-link-btn btn-teal">🔋 電池維護規範</a>
+                        </div>
+
+                        <div class="link-row-item" style="margin-bottom: 0;">
+                            <span class="link-row-text">服務顧問 (SA) 工單附件與合規作業規範宣導</span>
+                            <a href="https://drive.google.com/file/d/116z49dPKoRnmT3pF1l3-dJBrANJvghlf/view" target="_blank" class="doc-link-btn btn-teal">⚖️ SA 合規宣導</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 所有模式下的 Checkbox 查核清單 -->
                 <div id="checklist-containers">
-                    <!-- 1. 出保固 -->
                     <div class="section-card" id="chk-section-warranty" style="display: none;">
                         <div class="section-title">🔒 出保固專屬防漏附件</div>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="warranty"> <span>診斷電腦故障碼截圖已上傳</span></label>
@@ -155,7 +272,6 @@
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="warranty"> <span>儀表里程數清晰照片(無反光)</span></label>
                     </div>
 
-                    <!-- 2. 代步車 -->
                     <div class="section-card" id="chk-section-loaner" style="display: none;">
                         <div class="section-title">🚗 代步車出車前置防漏規範</div>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【清潔】內裝酒精消毒與外觀確認</span></label>
@@ -163,64 +279,70 @@
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【保養】確認代步車距下次保養 > 500km</span></label>
                     </div>
 
-                    <!-- 3. 重大維修/含拖吊防呆 -->
                     <div class="section-card" id="chk-section-major" style="display: none;">
                         <div class="section-title">🚧 3. 道路救援進廠權責查驗</div>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>已落實填寫基本4項資訊(姓名/電話/車牌/車型)</span>[cite: 2]</label>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>已通知業者目的地為「內湖民善街70號」</span>[cite: 2]</label>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>【關鍵控制】若車主未隨車，進廠第一時間全車拍照</span>[cite: 2]</label>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>【主動告知】查驗之既有傷痕已致電/傳圖告知車主</span>[cite: 2]</label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>已落實填寫基本4項資訊(姓名/電話/車牌/車型)</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>已通知業者目的地為「內湖民善街70號」</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>【關鍵控制】若車主未隨車，進廠第一時間全車拍照</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>【主動告知】查驗之既有傷痕已致電/傳圖告知車主</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="major"> <span>【出料】已將拖車單單據交至零件室出料作業</span></label>
                     </div>
 
-                    <!-- 4. 事故理賠 -->
                     <div class="section-card" id="chk-section-insurance" style="display: none;">
                         <div class="section-title">⚖️ 保險出險專屬理賠規範</div>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="insurance"> <span>保險公司理賠報案案號確認已開案</span></label>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="insurance"> <span>行車執照、駕駛執照影本已影印存檔</span></label>
                     </div>
 
-                    <!-- 5. PDI -->
-                    <div class="section-card" id="chk-section-pdi" style="display: none;">
-                        <div class="section-title">✨ 新車 PDI 完美交付整備</div>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="pdi"> <span>【外觀】全車漆面檢查無刮傷/運輸蠟已洗淨</span></label>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="pdi"> <span>【前擋】前擋風玻璃外觀檢查無碎石點/反光痕</span></label>
+                    <div class="section-card" id="chk-section-pdi" style="display: none;"></div>
+
+                    <div class="section-card" id="chk-section-custom1" style="display: none;">
+                        <div class="section-title">🔧 追加專案防漏查核</div>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="custom1"> <span>已取得客戶口頭或線上報價簽認授權</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="custom1"> <span>估資系統料號明細已鍵入完成</span></label>
+                    </div>
+
+                    <div class="section-card" id="chk-section-custom2" style="display: none;">
+                        <div class="section-title">🏢 外包代辦檢驗與點收規範</div>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="custom2"> <span>外包施工作業項目與預算審核通過</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="custom2"> <span>回廠成品外觀與功能複驗無誤</span></label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== 中欄：核心作業區 ==================== -->
         <div class="column col-mid">
-            <div class="col-header"><span>🔧 現場核心作業填寫 (中間)</span></div>
+            <div class="col-header">
+                <span>🔧 現場核心作業填寫 (中間)</span>
+                <span class="header-hint-text">⚠️ 需左欄對應之權責查驗完全勾選，方能解鎖複製。</span>
+            </div>
             <div class="col-body">
-                <!-- 6大核心模式切換器 -->
                 <div class="mode-container">
                     <button class="mode-btn active" onclick="changeMode('service', this)">標準定期保養</button>
                     <button class="mode-btn" onclick="changeMode('warranty', this)">技術查修/出保固</button>
                     <button class="mode-btn" onclick="changeMode('loaner', this)">代步車指派管理</button>
-                    <button class="mode-btn" onclick="changeMode('major', this)">重大維修/含拖吊</button>
+                    <button class="mode-btn" onclick="changeMode('major', this)">道路救援與拖吊指南</button>
                     <button class="mode-btn" onclick="changeMode('insurance', this)">事故保險理賠案</button>
                     <button class="mode-btn" onclick="changeMode('pdi', this)">新車 PDI 整備作業</button>
+                    <button class="mode-btn" onclick="changeMode('custom1', this)">衍生追加項目管理</button>
+                    <button class="mode-btn" onclick="changeMode('custom2', this)">廠外特定整備代辦</button>
                 </div>
 
-                <!-- 通用基本資訊 -->
                 <div class="section-card">
                     <div class="section-title">📝 車輛與客戶核心資料登記</div>
                     <div class="form-row">
-                        <div class="form-group"><label>車牌號碼 / 新車編號</label><input type="text" class="form-control" id="u-plate" value="ALFA-90" oninput="renderLine()"></div>
+                        <div class="form-group"><label>車牌號碼 / 工單號碼</label><input type="text" class="form-control" id="u-plate" value="ABC-1234" oninput="renderLine()"></div>
                         <div class="form-group"><label>車型款式</label><input type="text" class="form-control" id="u-model" value="Peugeot 5008" oninput="renderLine()"></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group"><label>車主姓名</label><input type="text" class="form-control" id="u-name" value="張先生" oninput="renderLine()"></div>
+                        <div class="form-group"><label>車主姓名 / 業務名稱</label><input type="text" class="form-control" id="u-name" value="張先生" oninput="renderLine()"></div>
                         <div class="form-group"><label>聯絡電話</label><input type="text" class="form-control" id="u-phone" value="0912-345678" oninput="renderLine()"></div>
                     </div>
                 </div>
 
-                <!-- 動態附加資訊表單 -->
                 <div class="section-card" id="dynamic-form-card">
                     <div class="section-title" id="dynamic-form-title">📌 定保專案內容</div>
                     
-                    <!-- 1. 保養 -->
                     <div id="form-group-service">
                         <div class="form-group">
                             <label>指定保養套餐</label>
@@ -232,7 +354,6 @@
                         <div class="form-group"><label>行駛里程 (km)</label><input type="number" class="form-control" id="u-mileage-srv" value="38500" oninput="renderLine()"></div>
                     </div>
 
-                    <!-- 2. 代步車 -->
                     <div id="form-group-loaner" style="display:none;">
                         <div class="form-row">
                             <div class="form-group">
@@ -249,20 +370,27 @@
                         </div>
                     </div>
 
-                    <!-- 3. 重大維修/拖吊 -->
                     <div id="form-group-major" style="display:none;">
                         <div class="form-row">
                             <div class="form-group"><label>救援分流與派遣管道</label>
                                 <select class="form-control" id="f-major-tow-type" onchange="renderLine()">
                                     <option value="類別 A - 常規拖吊 (全業市話專線)">類別 A - 常規拖吊 (撥打全業市話)</option>
                                     <option value="類別 B - 特殊拖吊 (直撥負責人阿賢手機)">類別 B - 特殊拖吊 (直撥阿賢優化成本)</option>
+                                    <option value="類別 C - 車主自行拖吊處理">類別 C - 車主自行拖吊處理</option>
                                 </select>
                             </div>
-                            <div class="form-group"><label>指派目的地</label><input type="text" class="form-control" id="f-major-dest" value="內湖民善街70號" readonly></div>
+                            <div class="form-group">
+                                <div class="form-label-container">
+                                    <label>指派目的地 (可修改)</label>
+                                    <label class="mid-check-label">
+                                        <input type="checkbox" id="f-major-paperwork" onchange="renderLine()"> 📋 拖車單已交零件室
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="f-major-dest" value="內湖民善街70號" oninput="renderLine()">
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 4. 保險理賠 -->
                     <div id="form-group-insurance" style="display:none;">
                         <div class="form-row">
                             <div class="form-group"><label>出險產險公司</label><input type="text" class="form-control" id="f-ins-name" value="富邦產物保險" oninput="renderLine()"></div>
@@ -270,53 +398,126 @@
                         </div>
                     </div>
 
-                    <!-- 5. 新車 PDI -->
                     <div id="form-group-pdi" style="display:none;">
                         <div class="form-row">
-                            <div class="form-group"><label>預計交車日期</label><input type="date" class="form-control" id="f-pdi-date" value="2026-07-15" onchange="renderLine()"></div>
+                            <div class="form-group"><label>預計交車日期</label><input type="date" class="date-input form-control" id="f-pdi-date" value="2026-07-15" onchange="renderLine()"></div>
                             <div class="form-group"><label>隨車配件/贈品清點</label><input type="text" class="form-control" id="f-pdi-gift" value="腳踏墊、行車紀錄器、隔熱紙單據" oninput="renderLine()"></div>
                         </div>
+                        
+                        <div class="pdi-items-box" style="border-color: #0d9488; background: #fafdfd;">
+                            <div class="pdi-items-title" style="color: #0d9488;">
+                                <span>🎨 新車特殊作業屬性管制 (烤漆 / 水險)</span>
+                                <a href="https://script.google.com/macros/s/AKfycbzhrVXWOsxlgsnoCrBZoZICpERA3SfRkUUZLlUOnKKxMcwrUzBSSfYTNBLRUJdWk4O5qQ/exec" target="_blank" class="doc-link-btn btn-teal" style="margin-left:auto;">🎨 漆面看板</a>
+                            </div>
+                            
+                            <div class="pdi-radio-group">
+                                <label class="pdi-radio-label"><input type="radio" name="u-pdi-type" value="internal" onclick="togglePdiSubBox('internal')"> 內轉營業所</label>
+                                <label class="pdi-radio-label"><input type="radio" name="u-pdi-type" value="warranty" onclick="togglePdiSubBox('warranty')"> 保固申請</label>
+                                <label class="pdi-radio-label"><input type="radio" name="u-pdi-type" value="outsource" onclick="togglePdiSubBox('outsource')"> 委外廠商加工</label>
+                                <label class="pdi-radio-label"><input type="radio" name="u-pdi-type" value="flood" onclick="togglePdiSubBox('flood')"> 水險作業</label>
+                                <label class="pdi-radio-label"><input type="radio" name="u-pdi-type" value="none" checked onclick="togglePdiSubBox('none')"> 常態無特殊作業</label>
+                            </div>
+
+                            <div id="pdi-sub-internal" class="pdi-dynamic-sub-box" style="border-left-color: #2563eb;">
+                                <div class="form-row">
+                                    <div class="form-group"><label>接收營業所 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-internal-loc" placeholder="請輸入移轉營業所名稱" oninput="renderLine()"></div>
+                                    <div class="form-group"><label>內部調撥單號 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-internal-id" placeholder="e.g. INT-2026-XXXX" oninput="renderLine()"></div>
+                                </div>
+                            </div>
+
+                            <div id="pdi-sub-warranty" class="pdi-dynamic-sub-box" style="border-left-color: #dc2626;">
+                                <div class="pdi-alert-banner" style="background-color: #fef2f2; color: #991b1b;">⚠️ 系統判定：索賠車。請確保保固事先授權核准單已簽核。</div>
+                                <div class="form-group"><label>事先授權核准案號 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-warranty-id" placeholder="請輸入原廠索賠核准案號" oninput="renderLine()"></div>
+                            </div>
+
+                            <div id="pdi-sub-outsource" class="pdi-dynamic-sub-box" style="border-left-color: #ea580c;">
+                                <div class="form-row">
+                                    <div class="form-group"><label>委外烤漆協力廠 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-outsource-vendor" placeholder="請輸入外包加工廠商" oninput="renderLine()"></div>
+                                    <div class="form-group"><label>預計施工日期 <span style="color:red;">*</span></label><input type="date" class="date-input form-control" id="u-pdi-outsource-date" onchange="renderLine()"></div>
+                                </div>
+                            </div>
+
+                            <div id="pdi-sub-flood" class="pdi-dynamic-sub-box" style="border-left-color: #0284c7;">
+                                <div class="pdi-alert-banner" style="background-color: #f0f9ff; color: #0369a1;">⚠️ 系統判定：水險車。施作前必須確認已與 PGU 及 三立托運 釐清責任。</div>
+                                <div class="form-group"><label>三方責任簽認案號 <span style="color:red;">*</span></label><input type="text" class="form-control" id="u-pdi-flood-id" placeholder="請輸入水險責任判定單號" oninput="renderLine()"></div>
+                            </div>
+                        </div>
+
+                        <div class="pdi-items-box">
+                            <div class="pdi-items-title">🚚 新車整備檢查 (PDI) 項目</div>
+                            <div class="pdi-checkbox-grid">
+                                <label class="pdi-checkbox-label"><input type="checkbox" id="chk-pdi-status-1" onchange="renderLine()"> PDI 完成</label>
+                                <label class="pdi-checkbox-label"><input type="checkbox" id="chk-pdi-status-2" onchange="renderLine()"> 電瓶印出</label>
+                                <label class="pdi-checkbox-label"><input type="checkbox" id="chk-pdi-status-3" onchange="renderLine()"> 圖資安裝</label>
+                                <label class="pdi-checkbox-label"><input type="checkbox" id="chk-pdi-status-4" onchange="renderLine()"> 中文化</label>
+                                <label class="pdi-checkbox-label"><input type="checkbox" id="chk-pdi-status-5" onchange="renderLine()"> 📷 行車紀錄器</label>
+                            </div>
+                            <div class="pdi-append-row">
+                                <label class="pdi-checkbox-label" style="color: #ca8a04;"><input type="checkbox" id="chk-pdi-status-6" onchange="renderLine()"> ⌛ 附加：圖資或中文化 業務擇日回廠另約處理</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 12px;">
+                            <label style="font-weight: 700; color: #0d9488;">💬 PDI 整備備註說明</label>
+                            <textarea class="form-control" id="u-pdi-notes" rows="2" style="resize:none;" placeholder="請在此記錄新車特定交車或整備備註..." oninput="renderLine()"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="form-group-custom1" style="display:none;">
+                        <div class="form-group"><label>追加項目說明</label><input type="text" class="form-control" id="f-c1-detail" value="現場底盤異音追加查修" oninput="renderLine()"></div>
+                    </div>
+
+                    <div id="form-group-custom2" style="display:none;">
+                        <div class="form-group"><label>代辦/委外廠商名稱</label><input type="text" class="form-control" id="f-c2-vendor" value="委外隔熱紙施工廠商" oninput="renderLine()"></div>
                     </div>
                 </div>
 
-                <!-- 快速點選技術標籤 -->
-                <div class="section-card">
+                <div class="section-card" id="mid-cost-section">
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <label style="color: #1e293b; font-weight: 700;">💰 費用屬性判定分流</label>
+                        <select class="form-control" id="f-cost-attribute" onchange="renderLine()" style="border: 1px solid #10b981; background: #f0fdf4;">
+                            <option value="">-- 請選擇費用屬性 (此項不顯示備註) --</option>
+                            <option value="客戶自費項目">客戶自費項目 (依現行收費標準結算)</option>
+                            <option value="原廠保固責任範圍">原廠保固責任範圍 (待技術數據審核通過後吸收)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-card" id="mid-tags-section">
                     <div class="section-title">🔍 核心點檢項目快速勾選 (多選)</div>
                     <div class="tag-grid">
-                        <button class="tag-btn" onclick="toggleTag(this, '定保耗材更新')">定保耗材更新</button>
-                        <button class="tag-btn" onclick="toggleTag(this, 'CAN Bus 訊號診斷')">CAN Bus 訊號診斷</button>
-                        <button class="tag-btn" onclick="toggleTag(this, '時規鍊條專案查修')">時規鍊條專案查修</button>
-                        <button class="tag-btn" onclick="toggleTag(this, '道路救援進廠外觀全車複檢')">道路救援車況拍照複檢</button>
+                        <button class="tag-btn" onclick="toggleTag(this, '引擎燈亮')">引擎燈亮</button>
+                        <button class="tag-btn" onclick="toggleTag(this, '尿素燈亮')">尿素燈亮</button>
+                        <button class="tag-btn" onclick="toggleTag(this, '無法啟動')">無法啟動</button>
+                        <button class="tag-btn" onclick="toggleTag(this, '接電進場')">接電進場</button>
+                        <button class="tag-btn" onclick="toggleTag(this, '事故車')">事故車</button>
                     </div>
                 </div>
 
-                <div class="section-card">
+                <div class="section-card" id="mid-notes-section">
                     <div class="section-title">💬 客戶主訴與現場備註</div>
                     <textarea class="form-control" id="u-notes" rows="2" style="resize:none;" placeholder="請在此記錄現場特定主訴..." oninput="renderLine()"></textarea>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== 右欄：LINE 複製與輸出 ==================== -->
         <div class="column col-right">
             <div class="col-header"><span>📱 LINE 客戶通知即時預覽 (right)</span><span id="lock-badge" class="status-badge status-ready">可複製</span></div>
             <div class="col-body">
                 <div class="line-preview-box" id="line-output"></div>
                 <div>
                     <button class="action-btn" id="btn-copy" onclick="doCopy()">📋 一鍵複製 LINE 訊息格式</button>
-                    <div id="blocker-hint" class="blocker-hint">⚠️ 左欄有對應的道路救援/防漏規範未勾選，已鎖定複製功能！</div>
+                    <div id="blocker-hint" class="blocker-hint">⚠️ 左欄有對應的防漏查核規範未勾選，已鎖定複製功能！</div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- 燈箱彈窗 DOM 容器結構 -->
     <div id="lightboxModal" class="lightbox-modal" onclick="closeLightbox()">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <img class="lightbox-content" id="lightboxImg" src="https://raw.githubusercontent.com/xdespair0217/SA/main/A01.jpg" alt="楊明得名片" onclick="event.stopPropagation();">
+        <img class="lightbox-content" id="lightboxImg" src="" alt="圖片放大參考" onclick="event.stopPropagation();">
     </div>
-
     <script>
         let activeMode = 'service';
         let activeTags = [];
@@ -332,57 +533,106 @@
             changeMode('service', document.querySelector('.mode-btn'));
         }
 
-        function openLightbox() {
+        function openLightbox(type) {
+            const imgTarget = document.getElementById('lightboxImg');
+            if(type === 'card') {
+                imgTarget.src = "https://raw.githubusercontent.com/xdespair0217/SA/main/A01.jpg";
+                imgTarget.alt = "楊明得名片";
+            } else if(type === 'towing-slip') {
+                imgTarget.src = "https://raw.githubusercontent.com/xdespair0217/SA/main/A02.png";
+                imgTarget.alt = "拖吊單參考圖";
+            } else if(type === 'pdi-flow') {
+                imgTarget.src = "https://raw.githubusercontent.com/xdespair0217/SA/main/A03.png";
+                imgTarget.alt = "PDI 新車車輛處理流程圖";
+            }
             document.getElementById('lightboxModal').style.display = 'flex';
         }
         function closeLightbox() {
             document.getElementById('lightboxModal').style.display = 'none';
         }
 
-        // 六大模式核心切換與「完全隱藏/顯示」控制邏輯
+        function togglePdiSubBox(type) {
+            document.getElementById('pdi-sub-internal').classList.remove('active');
+            document.getElementById('pdi-sub-warranty').classList.remove('active');
+            document.getElementById('pdi-sub-outsource').classList.remove('active');
+            document.getElementById('pdi-sub-flood').classList.remove('active');
+            
+            if (type !== 'none') {
+                document.getElementById('pdi-sub-' + type).classList.add('active');
+            }
+            renderLine();
+        }
+
         function changeMode(mode, btn) {
             activeMode = mode;
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // 1. 控制左欄橫條提示的 顯示與隱藏
             document.getElementById('alert-service').style.display = (mode === 'service') ? 'block' : 'none';
             document.getElementById('alert-warranty').style.display = (mode === 'warranty') ? 'block' : 'none';
             document.getElementById('alert-loaner').style.display = (mode === 'loaner') ? 'block' : 'none';
             document.getElementById('alert-major').style.display = (mode === 'major') ? 'block' : 'none';
             document.getElementById('alert-insurance').style.display = (mode === 'insurance') ? 'block' : 'none';
             document.getElementById('alert-pdi').style.display = (mode === 'pdi') ? 'block' : 'none';
+            document.getElementById('alert-custom1').style.display = (mode === 'custom1') ? 'block' : 'none';
+            document.getElementById('alert-custom2').style.display = (mode === 'custom2') ? 'block' : 'none';
             
-            // 道路救援專屬指南與話術顯示
             document.getElementById('script-towing-div').style.display = (mode === 'major') ? 'block' : 'none';
             document.getElementById('guide-towing-div').style.display = (mode === 'major') ? 'block' : 'none';
+            
+            document.getElementById('pdi-visual-guide-div').style.display = (mode === 'pdi') ? 'block' : 'none';
 
-            // 2. 徹底解決灰灰的問題，不再使用 opacity，改採 display 動態完全顯示或隱藏
             document.getElementById('chk-section-warranty').style.display = (mode === 'warranty') ? 'block' : 'none';
             document.getElementById('chk-section-loaner').style.display = (mode === 'loaner') ? 'block' : 'none';
             document.getElementById('chk-section-major').style.display = (mode === 'major') ? 'block' : 'none';
             document.getElementById('chk-section-insurance').style.display = (mode === 'insurance') ? 'block' : 'none';
             document.getElementById('chk-section-pdi').style.display = (mode === 'pdi') ? 'block' : 'none';
+            document.getElementById('chk-section-custom1').style.display = (mode === 'custom1') ? 'block' : 'none';
+            document.getElementById('chk-section-custom2').style.display = (mode === 'custom2') ? 'block' : 'none';
 
-            // 3. 控制中欄專屬輸入表單
             document.getElementById('form-group-service').style.display = (mode === 'service') ? 'block' : 'none';
             document.getElementById('form-group-loaner').style.display = (mode === 'loaner') ? 'block' : 'none';
             document.getElementById('form-group-major').style.display = (mode === 'major') ? 'block' : 'none';
             document.getElementById('form-group-insurance').style.display = (mode === 'insurance') ? 'block' : 'none';
             document.getElementById('form-group-pdi').style.display = (mode === 'pdi') ? 'block' : 'none';
+            document.getElementById('form-group-custom1').style.display = (mode === 'custom1') ? 'block' : 'none';
+            document.getElementById('form-group-custom2').style.display = (mode === 'custom2') ? 'block' : 'none';
+
+            document.getElementById('mid-cost-section').style.display = (mode === 'pdi') ? 'none' : 'block';
+            document.getElementById('mid-tags-section').style.display = (mode === 'pdi') ? 'none' : 'block';
+            document.getElementById('mid-notes-section').style.display = (mode === 'pdi') ? 'none' : 'block';
             
             const titles = { 
                 service: '定保專案內容', warranty: '技術出保核對資訊', 
-                loaner: '指派代步車資產登記', major: '道路救援派單與目的地確認',
-                insurance: '保險理賠案件開案登記', pdi: '新車 PDI 整備與交車時程'
+                loaner: '指派代步車資產登記', major: '道路救援與拖吊派遣目的地確認',
+                insurance: '保險理賠案件開案登記', pdi: '新車 PDI 整備與交車時程',
+                custom1: '衍生追加項目備忘', custom2: '廠外特定整備代辦追蹤'
             };
             document.getElementById('dynamic-form-title').innerText = titles[mode];
 
-            // 4. 切換模式時，重置所有 checkbox
             document.querySelectorAll('.chk-box').forEach(cb => {
                 cb.checked = false;
                 cb.closest('.check-item').classList.remove('checked');
             });
+
+            document.getElementById('f-major-paperwork').checked = false;
+            
+            const defaultRadio = document.querySelector('input[name="u-pdi-type"][value="none"]');
+            if (defaultRadio) defaultRadio.checked = true;
+            togglePdiSubBox('none');
+
+            for(let i=1; i<=6; i++) {
+                const el = document.getElementById(`chk-pdi-status-${i}`);
+                if(el) el.checked = false;
+            }
+            document.getElementById('u-pdi-notes').value = "";
+
+            document.getElementById('u-pdi-internal-loc').value = "";
+            document.getElementById('u-pdi-internal-id').value = "";
+            document.getElementById('u-pdi-warranty-id').value = "";
+            document.getElementById('u-pdi-outsource-vendor').value = "";
+            document.getElementById('u-pdi-outsource-date').value = "";
+            document.getElementById('u-pdi-flood-id').value = "";
 
             checkLockStatus();
         }
@@ -396,7 +646,7 @@
 
         function checkLockStatus() {
             let blocked = false;
-            if (activeMode !== 'service') {
+            if (activeMode !== 'service' && activeMode !== 'pdi') {
                 const targets = document.querySelectorAll(`.chk-box[data-group="${activeMode}"]`);
                 targets.forEach(cb => { if(!cb.checked) blocked = true; });
             }
@@ -421,13 +671,27 @@
         function renderLine() {
             const plate = document.getElementById('u-plate').value || '---';
             const model = document.getElementById('u-model').value || '---';
-            const name = document.getElementById('u-name').value || '車主';
+            const name = document.getElementById('u-name').value || '車主/業務';
+            const phone = document.getElementById('u-phone').value || '---';
             const notes = document.getElementById('u-notes').value || '無額外備註';
+            const pdiNotes = document.getElementById('u-pdi-notes').value || '無額外整備備註';
+            const costAttr = document.getElementById('f-cost-attribute').value;
 
             let t = `🚗【技術前線 | 車輛狀況確認回報】\n\n`;
             if (activeMode === 'pdi') t = `✨【技術前線 | 新車 PDI 到廠整備通知】\n\n`;
 
-            t += `📌【客戶基本資訊】\n• 車主姓名：${name}\n• 車牌號碼/新車編號：${plate}\n• 進廠車型：${model}\n`;
+            t += `📌【客戶基本資訊】\n• 車主姓名/業務名稱：${name}\n• 車牌/工單號碼：${plate}\n• 進廠車型：${model}\n• 聯絡電話：${phone}\n`;
+            
+            if (activeMode !== 'pdi' && costAttr !== "") {
+                t += `• 費用屬性：${costAttr}\n`;
+            }
+
+            if (activeMode === 'major') {
+                const paperworkChecked = document.getElementById('f-major-paperwork').checked;
+                if (paperworkChecked) {
+                    t += `🚨【內部派工備忘】拖車單據已送交零件室，請落實出料核對。\n`;
+                }
+            }
 
             if (activeMode === 'service') {
                 const pkg = document.getElementById('f-service-pkg').value;
@@ -441,27 +705,77 @@
                 t += `\n🚘【廠內代步車借用確認】\n• 指派車號：${lId}\n• 出車油量：${lFuel}\n• 狀態點檢：內裝消毒與外觀點檢已共同確認完成。\n`;
             } else if (activeMode === 'major') {
                 const towType = document.getElementById('f-major-tow-type').value;
-                const dest = document.getElementById('f-major-dest').value;
-                t += `\n🚨【道路救援與重大維修紀錄】\n• 救援派遣：${towType}\n• 指定目的地：拖往「${dest}」\n• 內部查驗：車輛送達時廠內 SA 將於第一時間落實全車影像留存，確立時間節點之車況真相，捍衛您的權益。\n`;[cite: 2]
+                const dest = document.getElementById('f-major-dest').value || '未填寫';
+                t += `\n🚨【道路救援與拖吊紀錄】\n• 救援派遣：${towType}\n• 指定目的地：拖往「${dest}」\n• 內部查驗：車輛送達時廠內 SA 將於第一時間落實全車影像留存...\n`;
             } else if (activeMode === 'insurance') {
                 const ins = document.getElementById('f-ins-name').value;
                 const insId = document.getElementById('f-ins-id').value;
-                t += `\n⚖️【事故車保險出險紀錄】\n• 承保產險公司：${ins}\n• 理賠開案單號：${insId}\n• 狀態回報：現場受損照片已封存，待理賠員現場勘車後出估。\n`;
+                t += `\n⚖️【事故車保險出險紀錄】\n• 承保產險公司：${ins}\n• 理賠開案單號：${insId}\n• 狀態回裝：現場受損照片已封存，待理賠員現場勘車後出估。\n`;
             } else if (activeMode === 'pdi') {
                 const pdiDate = document.getElementById('f-pdi-date').value;
                 const pdiGift = document.getElementById('f-pdi-gift').value;
-                t += `\n✨【新車整備與點收紀錄】\n• 預計新車交車日：${pdiDate}\n• 隨車配件清點：${pdiGift}\n• 狀態回報：車輛已進工位進行全車漆面點檢與電氣初始化。\n`;
+                t += `\n✨【新車整備與點收紀錄】\n• 預計新車交車日：${pdiDate}\n• 隨車配件清點：${pdiGift}\n`;
+                
+                const pdiType = document.querySelector('input[name="u-pdi-type"]:checked').value;
+                if (pdiType === 'internal') {
+                    const loc = document.getElementById('u-pdi-internal-loc').value || '---';
+                    const id = document.getElementById('u-pdi-internal-id').value || '---';
+                    t += `🎨【新車特殊作業】內轉營業所\n• 接收營業所：${loc}\n• 內部調撥單號：${id}\n`;
+                } else if (pdiType === 'warranty') {
+                    const id = document.getElementById('u-pdi-warranty-id').value || '---';
+                    t += `🎨【新車特殊作業】保固申請 (索賠車)\n• 事先授權核准案號：${id}\n`;
+                } else if (pdiType === 'outsource') {
+                    const vendor = document.getElementById('u-pdi-outsource-vendor').value || '---';
+                    const date = document.getElementById('u-pdi-outsource-date').value || '---';
+                    t += `🎨【新車特殊作業】委外廠商加工\n• 協力加工廠商：${vendor}\n• 預計施工日期：${date}\n`;
+                } else if (pdiType === 'flood') {
+                    const id = document.getElementById('u-pdi-flood-id').value || '---';
+                    t += `🎨【新車特殊作業】水險作業 (水險車)\n• 三方責任簽認案號：${id}\n`;
+                }
+
+                let pdiDoneItems = [];
+                if(document.getElementById('chk-pdi-status-1').checked) pdiDoneItems.push('PDI完成');
+                if(document.getElementById('chk-pdi-status-2').checked) pdiDoneItems.push('電瓶印出');
+                if(document.getElementById('chk-pdi-status-3').checked) pdiDoneItems.push('圖資安裝');
+                if(document.getElementById('chk-pdi-status-4').checked) pdiDoneItems.push('中文化');
+                
+                if(pdiDoneItems.length > 0) {
+                    t += `• 廠內整備進度：${pdiDoneItems.join('、')} 已執行完畢。\n`;
+                }
+                
+                if(document.getElementById('chk-pdi-status-5').checked) {
+                    t += `▪️ 行車紀錄器安裝完成（原廠後視鏡已隨車交還業務 / 車主）\n`;
+                }
+                
+                if(document.getElementById('chk-pdi-status-6').checked) {
+                    t += `⚠️【特記備忘】圖資或中文化業務擇日回廠另約處理。\n`;
+                }
+            } else if (activeMode === 'custom1') {
+                const c1Detail = document.getElementById('f-c1-detail').value;
+                t += `\n➕【衍生追加項目紀錄】\n• 追加細節：${c1Detail}\n• 狀態回報：已落實規範核對，待技師拆解後進行最終報價。\n`;
+            } else if (activeMode === 'custom2') {
+                const c2Vendor = document.getElementById('f-c2-vendor').value;
+                t += `\n🏢【廠外特定整備代辦紀錄】\n• 委外廠商：${c2Vendor}\n• 狀態回裝：外包項目已建檔，進度持續追蹤卡控中。\n`;
             }
 
-            t += `\n🔧【預計現場點檢/追加項目】\n`;
-            if (activeTags.length > 0) {
-                activeTags.forEach(tag => t += `• ✅ ${tag}\n`);
+            if (activeMode !== 'pdi') {
+                t += `\n🔧【預計現場點檢/主訴項目】\n`;
+                if (activeTags.length > 0) {
+                    activeTags.forEach(tag => t += `• ✅ ${tag}\n`);
+                } else {
+                    t += `• ⚠️ 現場技師拆解診斷結果為準\n`;
+                }
+            }
+
+            if (activeMode === 'pdi') {
+                t += `\n💬【PDI 整備備註說明】\n${pdiNotes}\n\n`;
             } else {
-                t += `• ⚠️ 現場技師拆解診斷結果為準\n`;
+                t += `\n💬【現場備註說明】\n${notes}\n\n`;
             }
-
-            t += `\n💬【現場備註說明】\n${notes}\n\n`;
-            t += `💡 溫馨提醒：本廠未經您的正式授權絕不盲目追加任何維修費用。若經技師診斷確認屬於「新車保固範圍內之責任」，該次道路救援費用將由公司依法吸收；若屬外力損壞、消耗品或過保固，SA 將提供現場照片與自費合約標準向您線上說明。`;[cite: 2]
+            
+            if (activeMode !== 'pdi') {
+                t += `💡 溫馨提醒：本廠未經您的正式授權絕不盲目追加任何維修費用。若經技師診斷確認屬於「新車保固範圍內之責任」，該次道路救援費用將由公司依法吸收；若屬外力損壞、消耗品或過保固，SA 將提供現場照片與自費合約標準向您線上說明。`;
+            }
 
             document.getElementById('line-output').innerText = t;
         }

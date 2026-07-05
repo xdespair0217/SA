@@ -6,7 +6,7 @@
     <title>SA 接待一頁式核心工作台 (v2.6 PDI動態深度分流版)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Microsoft JhengHei", sans-serif; }
-        body { background-color: #f4f6f9; color: #33; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { background-color: #f4f6f9; color: #333; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         header { background-color: #1e293b; color: #ffffff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; flex-shrink: 0; }
         header h1 { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         header .version-tag { background-color: #3b82f6; color: white; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
@@ -57,7 +57,7 @@
         .link-row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 6px; }
         .link-row-text { font-size: 11.5px; font-weight: 600; color: #334155; padding-right: 10px; }
 
-        /* 💡 新增：中欄代步車唯讀動態資產卡樣式 */
+        /* 中欄代步車唯讀動態資產卡樣式 */
         .loaner-asset-card { background: #f0fdf4; border: 1px dashed #10b981; border-radius: 6px; padding: 10px 12px; margin-top: 10px; display: none; }
         .loaner-asset-card.active { display: block; }
         .loaner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; color: #334155; margin-top: 4px; }
@@ -78,7 +78,7 @@
         /* PDI 中欄延伸框框排版 */
         .pdi-items-box { background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 10px; margin-top: 10px; }
         .pdi-items-title { font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
-        .pdi-checkbox-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: 12px; color: #33; margin-bottom: 8px; }
+        .pdi-checkbox-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: 12px; color: #333; margin-bottom: 8px; }
         .pdi-checkbox-label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; }
         .pdi-checkbox-label input { width: 14px; height: 14px; cursor: pointer; }
         .pdi-append-row { border-top: 1px dashed #e2e8f0; padding-top: 8px; margin-top: 6px; font-size: 12px; color: #ca8a04; font-weight: 600; }
@@ -108,6 +108,38 @@
 
         .mid-check-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #b91c1c; cursor: pointer; background: #fef2f2; padding: 1px 6px; border: 1px dashed #fca5a5; border-radius: 4px; line-height: 1; }
         .mid-check-label input { width: 12px; height: 12px; cursor: pointer; margin: 0; }
+
+        /* 🎨 核心點檢項目快速勾選按鈕專屬膠囊樣式補回 */
+        .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+        .tag-btn { 
+            padding: 6px 14px; 
+            font-size: 12px; 
+            font-weight: 500; 
+            color: #334155; 
+            background-color: #ffffff; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .tag-btn:hover { 
+            border-color: #94a3b8; 
+            background-color: #f8fafc; 
+        }
+        /* 點擊激活後的翡翠綠動態變色 */
+        .tag-btn.active { 
+            background-color: #10b981; 
+            border-color: #10b981; 
+            color: #ffffff; 
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        /* 燈箱基本樣式 */
+        .lightbox-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
+        .lightbox-content { max-width: 85%; max-height: 85%; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -237,7 +269,7 @@
 
                     <div class="section-card" id="chk-section-loaner" style="display: none;">
                         <div class="section-title">🚗 代步車出車前置防漏規範</div>
-                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【清潔禁菸】內裝已酒精消毒、外觀確認並嚴禁車上吸菸</span></label>
+                        <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【清潔禁菸】內裝已清潔完成、外觀確認並嚴禁車上吸菸</span></label>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【起步油量】確認代步車目前油量至少在「一半以上」</span></label>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【規費宣導】已明確提醒車主過路 ETC 費用與自理停車費</span></label>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="loaner"> <span>【自身合規】查驗此代步車是否鄰近保養里程、是否需要驗車</span></label>
@@ -318,12 +350,11 @@
                         <div class="form-group"><label>行駛里程 (km)</label><input type="number" class="form-control" id="u-mileage-srv" value="38500" oninput="renderLine()"></div>
                     </div>
 
-                    <!-- █ 💡 中欄修改：代步車核心欄位與履歷看板 █ -->
+                    <!-- 💡 代步車核心欄位與履歷看板 -->
                     <div id="form-group-loaner" style="display:none;">
                         <div class="form-row">
                             <div class="form-group">
                                 <label>分派代步車號</label>
-                                <!-- 納入您 Snipaste_2026-07-05_18-20-22.png 圖片中實際的所有車號 -->
                                 <select class="form-control" id="f-loaner-id" onchange="onLoanerVehicleChange()">
                                     <option value="">-- 請選取派發之代步車 --</option>
                                     <option value="BBJ-3302">BBJ-3302 (南港廠)</option>
@@ -341,12 +372,12 @@
                                 <select class="form-control" id="f-loaner-fuel" onchange="renderLine()">
                                     <option value="滿油">滿油 (100%)</option>
                                     <option value="3/4油">3/4 油量 (75%)</option>
-                                    <option value="1/2油(最低限制)">1/2 油量 (50% 最低標準)</option>
+                                    <option value="1/2油(最低限制)">1/2 油量 (50% 最底標準)</option>
                                 </select>
                             </div>
                         </div>
 
-                      <!-- 💡 唯讀資產卡：選定車牌自動動態顯現，包含您要求的完整數據細項 -->
+                        <!-- 💡 唯讀資產卡：選定車牌自動動態顯現 -->
                         <div id="loaner-asset-card" class="loaner-asset-card">
                             <div style="font-size:11.5px; font-weight:700; color:#065f46; border-bottom: 1px dashed #a7f3d0; padding-bottom:4px; margin-bottom:6px;">📋 該派發代步車動態資產履歷看板</div>
                             <div class="loaner-grid">
@@ -471,7 +502,6 @@
                     </div>
                 </div>
 
-                <!-- █ 💡 卡控修正：依據圖片 2 要求，這些隔離區塊在代步車(loaner)模式下將自動隱藏 █ -->
                 <div class="section-card" id="mid-cost-section">
                     <div class="form-group" style="margin-bottom: 12px;">
                         <label style="color: #1e293b; font-weight: 700;">💰 費用屬性判定分流</label>
@@ -518,11 +548,12 @@
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
         <img class="lightbox-content" id="lightboxImg" src="" alt="圖片放大參考" onclick="event.stopPropagation();">
     </div>
+
     <script>
         let activeMode = 'service';
         let activeTags = [];
 
-       // 💡 內建硬編碼代步車資料庫（完全對應圖片數據），以便在沒串接試算表前 SA 也能即時點閱
+        // 💡 內建硬編碼代步車資料庫（完全對應圖片數據），以便在沒串接試算表前 SA 也能即時點閱
         const loanerDatabase = {
             "BBJ-3302": { branch: "公司統編 28675379 (南港廠)", next: "115年9月25日", mile: "42,100 km" },
             "BKT-6753": { branch: "公司統編 28675379 (南港廠)", next: "115年6月1日", mile: "39,500 km" },
@@ -533,6 +564,7 @@
             "RFX-5832": { branch: "公司統編 28683407 (內湖廠)", next: "115年9月30日", mile: "22,100 km" },
             "RFX-5835": { branch: "公司統編 28683407 (內湖廠)", next: "115年9月30日", mile: "19,800 km" }
         };
+
         window.onload = function() {
             document.querySelectorAll('.chk-box').forEach(cb => {
                 cb.addEventListener('change', function() {
@@ -625,7 +657,7 @@
             document.getElementById('form-group-custom1').style.display = (mode === 'custom1') ? 'block' : 'none';
             document.getElementById('form-group-custom2').style.display = (mode === 'custom2') ? 'block' : 'none';
 
-            // █ 💡 修正控制邏輯：當切換至代步車模式時，同步徹底隱藏不相干的費用屬性、點檢項目與備註 █
+            // 當切換至代步車模式時，同步徹底隱藏不相干的費用屬性、點檢項目與備註
             document.getElementById('mid-cost-section').style.display = (mode === 'pdi' || mode === 'loaner') ? 'none' : 'block';
             document.getElementById('mid-tags-section').style.display = (mode === 'pdi' || mode === 'loaner') ? 'none' : 'block';
             document.getElementById('mid-notes-section').style.display = (mode === 'pdi' || mode === 'loaner') ? 'none' : 'block';
@@ -665,6 +697,10 @@
             document.getElementById('f-loaner-id').value = "";
             document.getElementById('f-loaner-fuel').value = "滿油";
             onLoanerVehicleChange();
+
+            // 重設快速勾選按鈕狀態
+            document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+            activeTags = [];
 
             checkLockStatus();
         }
@@ -734,7 +770,7 @@
             } else if (activeMode === 'loaner') {
                 const lId = document.getElementById('f-loaner-id').value || '未分派';
                 const lFuel = document.getElementById('f-loaner-fuel').value;
-                t += `\n🚘【廠內代步車借用確認】\n• 指派車號：${lId}\n• 出車油量：${lFuel}\n• 整備狀態：內外酒精消毒完畢、車況正常且已確認為【合規免驗車/免保養】狀態。\n• 規範承諾：`;
+                t += `\n🚘【廠內代步車借用確認】\n• 指派車號：${lId}\n• 出車油量：${lFuel}\n• 整備狀態：內外已清潔完成、車況正常且已確認為【合規免驗車/免保養】狀態。\n• 規範承諾：`;
                 
                 let rules = [];
                 if(document.getElementById('chk-loaner-smoke').checked) rules.push('嚴禁車上吸菸');
@@ -746,7 +782,7 @@
             } else if (activeMode === 'major') {
                 const towType = document.getElementById('f-major-tow-type').value;
                 const dest = document.getElementById('f-major-dest').value || '未填寫';
-                t += `\n🚨【道路救援與拖吊紀錄】\n• 救援派遣：${towType}\n• 指定目的地：拖往「${dest}」\n• 內部查驗：車輛送達時廠內 SA 將於第一時間落實全車影像留存...\n`;
+                t += `\n🚨【道路救援與拖吊紀錄】\n• 救援派遣：${towType}\n• 指定目的地：拖往「${dest}」\n`;
             } else if (activeMode === 'insurance') {
                 const ins = document.getElementById('f-ins-name').value;
                 const insId = document.getElementById('f-ins-id').value;

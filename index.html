@@ -189,9 +189,13 @@
                     <div id="alert-custom2" class="alert-bar alert-warning" style="display:none;"><strong>🔹 廠外特定整備：</strong>委外加工與配件裝潢進度追蹤卡控。</div>
                 </div>
 
-                <!-- 新車 / 漆面出保固專屬左欄 SOP 技術規範指南面板 -->
                 <div id="warranty-visual-guide-div" style="display:none;">
-                    <div class="section-title">📜 新車 / 漆面保固索賠標準作業程序 (SOP)</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
+                        <div class="section-title" style="margin-bottom: 0;">📜 新車 / 漆面保固索賠標準作業程序 (SOP)</div>
+                        <div class="doc-btn-group">
+                            <a href="https://drive.google.com/file/d/1r7lsyvZTG7Ba_3tYFL8QbLZ1w3qQEvWV/view" target="_blank" class="doc-link-btn btn-blue" title="下載完整漆面保固索賠標準作業程序">📄 完整SOP</a>
+                        </div>
+                    </div>
                     
                     <div class="pdi-card" style="background-color: #f0f7ff; border-color: #9cd3ff;">
                         <span class="pdi-card-tag" style="background: #2563eb;">一、SA 階段</span>
@@ -272,7 +276,6 @@
                     </div>
                 </div>
 
-                <!-- 新車 PDI 流程圖落地指南區 -->
                 <div id="pdi-visual-guide-div" style="display:none;">
                     <div class="section-title-container" style="margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">
                         <div class="section-title" style="margin-bottom: 0;">🗺️ 新車車輛處理流程細則解構</div>
@@ -294,7 +297,7 @@
                         <span class="pdi-card-tag" style="background: #ea580c;">02 / DECISION</span>
                         <strong>第一時間屬性判定 (切勿延誤時效)</strong>
                         <ul>
-                            <li>• ⚠️ <strong>水險車：</strong>施工前置。必須先與 PGU 和 三立托運 溝通確認後方可施工。</li>
+                            <li>• ⚠️ <strong>水險車：</strong>施工前置。必須先與 PGU 和 三立托運 溝通確認後方可施工.</li>
                             <li>• 🔧 <strong>索賠車：</strong>授權前置。依保固作業提供報價單進行事先授權，核准後方可施工。</li>
                             <li style="color:#b91c1c; font-weight:bold; margin-top:2px;">📍 空間盲點：嚴禁未經確認 / 授權即自行施工！</li>
                         </ul>
@@ -330,7 +333,6 @@
                 </div>
 
                 <div id="checklist-containers">
-                    <!-- █ 💡 左欄更新：精準切分 SA 出保固核心卡控指標，避免與引擎組混淆 █ -->
                     <div class="section-card" id="chk-section-warranty" style="display: none;">
                         <div class="section-title">🔒 出保固專屬防漏附件</div>
                         <label class="check-item"><input type="checkbox" class="chk-box" data-group="warranty"> <span>開立索賠工單，且系統與紙本品項金額完全一致</span></label>
@@ -424,11 +426,9 @@
                         <div class="form-group"><label>行駛里程 (km)</label><input type="number" class="form-control" id="u-mileage-srv" value="38500" oninput="renderLine()"></div>
                     </div>
 
-                    <!-- 💼 技術出保專屬核心附件與備忘面板 -->
                     <div id="form-group-warranty" style="display:none;">
                         <div class="pdi-items-box" style="border-color: #3b82f6; background: #f8fafc; margin-top: 0;">
                             <div style="font-size:11.5px; font-weight:700; color:#1e3a8a; margin-bottom:8px;">📋 查修核對檢驗資產 (多選)</div>
-                            <!-- █ 💡 中欄更新：由6個擴充至8個按鈕，完美補入發貨驗收單與鈑噴報價單 █ -->
                             <div class="pdi-checkbox-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
                                 <label class="pdi-checkbox-label" style="color: #2563eb;"><input type="checkbox" id="chk-war-cif" onchange="renderLine()"> CIF 紙本及電子檔</label>
                                 <label class="pdi-checkbox-label" style="color: #10b981;"><input type="checkbox" id="chk-war-media" onchange="renderLine()"> 影片照片</label>
@@ -447,9 +447,13 @@
                                 <label class="pdi-checkbox-label" style="color: #b45309; font-size:11.5px; font-weight: 600;"><input type="checkbox" id="chk-war-auth" onchange="renderLine()"> ⚠️ 目前進行原廠事先授權，等候通知。</label>
                             </div>
                         </div>
+                        
+                        <div class="form-group" style="margin-top: 12px;">
+                            <label style="font-weight: 700; color: #1e3a8a;">💬 出保固特殊備註說明</label>
+                            <textarea class="form-control" id="u-war-notes" rows="2" style="resize:none;" placeholder="請在此記錄出保特殊狀況主訴或現場交待..." oninput="renderLine()"></textarea>
+                        </div>
                     </div>
 
-                    <!-- 💡 代步車核心欄位與履歷看板 -->
                     <div id="form-group-loaner" style="display:none;">
                         <div class="form-row">
                             <div class="form-group">
@@ -476,7 +480,6 @@
                             </div>
                         </div>
 
-                        <!-- 💡 唯讀資產卡 -->
                         <div id="loaner-asset-card" class="loaner-asset-card">
                             <div style="font-size:11.5px; font-weight:700; color:#065f46; border-bottom: 1px dashed #a7f3d0; padding-bottom:4px; margin-bottom:6px;">📋 該派發代步車動態資產履歷看板</div>
                             <div class="loaner-grid">
@@ -643,13 +646,11 @@
 
     </div>
 
-    <!-- 原始燈箱 (圖片放大) -->
     <div id="lightboxModal" class="lightbox-modal" onclick="closeLightbox()">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
         <img class="lightbox-content" id="lightboxImg" src="" alt="圖片放大參考" onclick="event.stopPropagation();">
     </div>
 
-    <!-- 📲 帳密對照獨立面板燈箱 -->
     <div class="cred-modal-overlay" id="credModal" onclick="closeCredModalOnOverlay(event)">
         <div class="cred-modal-content">
             <div class="cred-modal-header">
@@ -919,6 +920,7 @@
             document.getElementById('chk-war-quote').checked = false;
             document.getElementById('chk-war-didi').checked = false;
             document.getElementById('chk-war-auth').checked = false;
+            document.getElementById('u-war-notes').value = "";
 
             document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
             activeTags = [];
@@ -964,6 +966,7 @@
             const phone = document.getElementById('u-phone').value || '---';
             const notes = document.getElementById('u-notes').value || '無額外備註';
             const pdiNotes = document.getElementById('u-pdi-notes').value || '無額外整備備註';
+            const warNotes = document.getElementById('u-war-notes').value || '無額外出保備註';
             const costAttr = document.getElementById('f-cost-attribute').value;
 
             let t = `🚗【技術前線 | 車輛狀況確認回報】\n\n`;
@@ -989,7 +992,6 @@
             } else if (activeMode === 'warranty') {
                 t += `\n💼【原廠保護專案】\n• 案件類別：技術查修/出保固申請\n`;
                 
-                // █ 💡 精準抓取勾選按鈕名稱組合跑字邏輯（擴充為 8 個） █
                 let activeCreds = [];
                 if (document.getElementById('chk-war-cif').checked) activeCreds.push('CIF 紙本及電子檔');
                 if (document.getElementById('chk-war-media').checked) activeCreds.push('影片照片');
@@ -1096,9 +1098,12 @@
                 }
             }
 
+            // █ 💡 右側預覽更新：將專屬出保固特殊備註內容同步渲染到 LINE 面板 █
             if (activeMode === 'pdi') {
                 t += `\n💬【PDI 整備備註說明】\n${pdiNotes}\n\n`;
-            } else if (activeMode !== 'loaner' && activeMode !== 'warranty') {
+            } else if (activeMode === 'warranty') {
+                t += `\n💬【出保固特殊備註說明】\n${warNotes}\n\n`;
+            } else if (activeMode !== 'loaner') {
                 t += `\n💬【現場備註說明】\n${notes}\n\n`;
             }
             
@@ -1109,6 +1114,7 @@
             document.getElementById('line-output').innerText = t;
         }
 
+        /* 複製邏輯 */
         function doCopy() {
             const out = document.getElementById('line-output').innerText;
             navigator.clipboard.writeText(out).then(() => {
